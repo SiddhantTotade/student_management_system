@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 # Create your models here.
@@ -67,8 +68,10 @@ class Students(models.Model):
     profile_pic = models.FileField()
     address = models.TextField()
     course_id = models.ForeignKey(Courses, on_delete=models.DO_NOTHING)
-    session_start_year = models.DateField()
-    session_end_year = models.DateField()
+    session_start_year = models.DateField(
+        default=datetime.now, blank=True, null=True)
+    session_end_year = models.DateField(
+        default=datetime.now, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
     objects = models.Manager()
