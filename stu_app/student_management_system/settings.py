@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'stu_mngmnt_sys_app',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -131,6 +132,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 AUTH_USER_MODEL = 'stu_mngmnt_sys_app.CustomUser'
+AUTHENTICATION_BACKENDS = ['stu_mngmnt_sys_app.email_backend.EmailBackend']
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
