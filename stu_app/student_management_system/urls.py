@@ -21,7 +21,10 @@ from stu_mngmnt_sys_app import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    
     path('', views.showLoginPage),
-    path('doLogin', views.doLogin),
     path('home', views.homePage),
+    path('doLogin', views.doLogin),
+    path('logout_user', views.logout_user),
+    path('get_user_details', views.getUserDetails),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)+static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

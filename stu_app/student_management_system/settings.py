@@ -45,7 +45,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'stu_mngmnt_sys_app',
-    'channels',
 ]
 
 MIDDLEWARE = [

@@ -1,7 +1,7 @@
-from channels.auth import login
+from django.contrib.auth import login, logout, authenticate
 from django.http import HttpResponse
 from django.shortcuts import render
-from stu_mngmnt_sys_app import email_backend
+from stu_mngmnt_sys_app.email_backend import EmailBackend
 # Create your views here.
 
 
@@ -20,10 +20,10 @@ def doLogin(request):
     if request.method != "POST":
         return HttpResponse("<h2>Method Not Allowed</h2>")
     else:
-        user = email_backend.authenticate(
-            request, request.POST.get("email"), request.POST.get("password"))
+        user = EmailBackend.authenticate(
+            request, username=request.POST.get("email"), password=request.POST.get("password"))
         if user != None:
-            login(user)
+            login(request, user)
             return HttpResponse("Email : "+request.POST.get("email")+" Password : "+request.POST.get("password"))
         else:
             return HttpResponse("Inavlid Login")
@@ -35,3 +35,9 @@ def getUserDetails(request):
         return HttpResponse("User : "+request.user.email+"Usertype : "+request.user.user_type)
     else:
         return HttpResponse("Please login first")
+
+
+# Logout view
+def logout_user(request):
+    logout(request)
+    return HttpResponse("/")
