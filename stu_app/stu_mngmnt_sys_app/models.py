@@ -163,5 +163,5 @@ def save_user_profile(sender, instance, **kwargs):
         instance.adminhod.save()
     if instance.user_type == 2:
         instance.staffs.save()
-    if instance.user_type == 1:
+    if instance.user_type == 3:
         instance.students.save()
