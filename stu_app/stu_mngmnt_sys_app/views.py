@@ -1,7 +1,8 @@
 from django.contrib.auth import login, logout, authenticate
-from django.http import HttpResponse
+from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import render
 from stu_mngmnt_sys_app.email_backend import EmailBackend
+from django.contrib import messages
 # Create your views here.
 
 
@@ -26,7 +27,8 @@ def doLogin(request):
             login(request, user)
             return HttpResponse("Email : "+request.POST.get("email")+" Password : "+request.POST.get("password"))
         else:
-            return HttpResponse("Inavlid Login")
+            messages.error(request, "Invalid login details")
+            return HttpResponseRedirect("/")
 
 
 # getUserDetails view
