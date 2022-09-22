@@ -1,11 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import messages
-from stu_mngmnt_sys_app.models import CustomUser
+from stu_mngmnt_sys_app.models import CustomUser, Courses
+
 
 # Redndering home page
-
-
 def admin_home(request):
     return render(request, 'hod_template/home_content.html')
 
@@ -15,6 +14,7 @@ def add_staff(request):
     return render(request, 'hod_template/add_staff_template.html')
 
 
+# Adding new staff and details.
 def add_staff_save(request):
     if request.method != 'POST':
         return HttpResponse("Method not allowed")
@@ -35,3 +35,24 @@ def add_staff_save(request):
         except:
             messages.error(request, "Failed to add staff")
             return HttpResponseRedirect("/add_staff")
+
+
+# Rendering add_course page
+def add_course(request):
+    return render(request, 'hod_template/add_course_template.html')
+
+
+# Adding courses
+def add_course_save(request):
+    if request.method != "POST":
+        messages.error(request, "Method not allowed")
+    else:
+        course = request.POST.get("course")
+        try:
+            course_model = Courses(course_name=course)
+            course_model.save()
+            messages.success(request, "Course added successfully")
+            return HttpResponseRedirect("/add_course")
+        except:
+            messages.error(request, "Failed to add course")
+            return HttpResponseRedirect("/add_course")
