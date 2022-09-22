@@ -17,14 +17,15 @@ from django.contrib import admin
 from django.conf.urls.static import static
 from django.urls import path
 from student_management_system import settings
-from stu_mngmnt_sys_app import views
+from stu_mngmnt_sys_app import views, hodViews
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    
+
     path('', views.showLoginPage),
     path('home', views.homePage),
     path('doLogin', views.doLogin),
     path('logout_user', views.logout_user),
+    path('admin_home', hodViews.admin_home),
     path('get_user_details', views.getUserDetails),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)+static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
