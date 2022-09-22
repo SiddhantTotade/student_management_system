@@ -82,7 +82,7 @@ def add_student_save(request):
         try:
             user = CustomUser.objects.create_user(
                 username=username, password=password, email=email, last_name=last_name, first_name=first_name, user_type=2)
-            user.staffs.address = address
+            user.students.address = address
             course_obj = Courses.objects.get(id=course_id)
             user.students.course_id = course_obj
             user.students.session_start_year = session_start
