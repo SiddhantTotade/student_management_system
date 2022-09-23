@@ -89,6 +89,7 @@ def add_student_save(request):
             user.students.session_end_year = session_end
             user.students.gender = sex
             user.students.profile_pic = ""
+            print(user)
             user.save()
             messages.success(request, "Student added successfully")
             return HttpResponseRedirect("/add_student")
