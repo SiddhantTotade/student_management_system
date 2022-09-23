@@ -79,7 +79,6 @@ def add_student_save(request):
         session_end = request.POST.get("session_end")
         course_id = request.POST.get("course")
         sex = request.POST.get("sex")
-        print(sex)
 
         try:
             user = CustomUser.objects.create_user(
@@ -91,6 +90,7 @@ def add_student_save(request):
             user.students.session_end_year = session_end
             user.students.gender = sex
             user.students.profile_pic = ""
+            print(sex)
             # user.save()
             messages.success(request, "Student added successfully")
             return HttpResponseRedirect("/add_student")
