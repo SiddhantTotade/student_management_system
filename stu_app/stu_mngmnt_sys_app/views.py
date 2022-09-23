@@ -25,10 +25,10 @@ def doLogin(request):
             request, username=request.POST.get("email"), password=request.POST.get("password"))
         if user != None:
             login(request, user)
-            if user.user_type == 1:
+            if user.user_type == "1":
                 return HttpResponseRedirect("/admin_home")
-            elif user.user_type == 2:
-                return HttpResponse("Staff login")
+            elif user.user_type == "2":
+                return HttpResponse("Staff login"+str(user.user_type))
             else:
                 return HttpResponse("Student login"+str(user.user_type))
         else:
