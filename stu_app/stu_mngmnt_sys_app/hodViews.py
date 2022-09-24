@@ -96,3 +96,15 @@ def add_student_save(request):
         except:
             messages.error(request, "Failed to add student")
             return HttpResponseRedirect("/add_student")
+
+
+# Rendering add_subject page
+def add_subject(request):
+    courses = Courses.objects.all()
+    staffs = CustomUser.objects.filter(user_type=2)
+    return render(request, 'hod_template/add_subject_template.html', {'courses': courses, 'staffs': staffs})
+
+
+# Adding subject
+def add_subject_save(request):
+    pass
