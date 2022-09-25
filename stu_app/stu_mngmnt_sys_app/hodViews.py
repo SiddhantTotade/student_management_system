@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import messages
-from stu_mngmnt_sys_app.models import CustomUser, Courses, Subjects
+from stu_mngmnt_sys_app.models import CustomUser, Courses, Subjects, Staffs
 
 
 # Redndering home page
@@ -129,6 +129,5 @@ def add_subject_save(request):
 
 # Rendering manage_staff page
 def manage_staff(request):
-    return render(request, 'hod_template/manage_staff_template.html')
-
-
+    staffs = Staffs.objects.all()
+    return render(request, 'hod_template/manage_staff_template.html', {'staffs': staffs})

@@ -36,5 +36,5 @@ urlpatterns = [
     path('add_subject', hodViews.add_subject),
     path('add_subject_save', hodViews.add_subject_save),
     path('get_user_details', views.getUserDetails),
-    path('manage_staff', views.manage_staff),
+    path('manage_staff', hodViews.manage_staff),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)+static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

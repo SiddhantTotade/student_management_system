@@ -8,7 +8,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Responsive Hover Table</h3>
+                        <h3 class="card-title">Manage Staff</h3>
 
                         <div class="card-tools">
                             <div class="input-group input-group-sm" style="width: 150px;">
@@ -27,41 +27,31 @@
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>User</th>
-                                    <th>Date</th>
-                                    <th>Status</th>
-                                    <th>Reason</th>
+                                    <th>First name</th>
+                                    <th>Last name</th>
+                                    <th>Username</th>
+                                    <th>Email</th>
+                                    <th>Address</th>
+                                    <th>Date joined</th>
+                                    <th>Last login</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                {% for staff in staffs %}
                                 <tr>
-                                    <td>183</td>
-                                    <td>John Doe</td>
-                                    <td>11-7-2014</td>
-                                    <td><span class="tag tag-success">Approved</span></td>
-                                    <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
+                                    <td>{{ staff.admin.id }}</td>
+                                    <td>{{ staff.admin.first_name }}</td>
+                                    <td>{{ staff.admin.last_name }}</td>
+                                    <td>{{ staff.admin.username }}</td>
+                                    <td>{{ staff.admin.email }}</td>
+                                    <td>{{ staff.address }}</td>
+                                    <td>{{ staff.admin.last_login }}</td>
+                                    <td>{{ staff.admin.date_joined }}</td>
+                                    <td><a href="/edit_staff/{{staff.admin.id}}" class="btn btn-success">Edit</a></td>
+
                                 </tr>
-                                <tr>
-                                    <td>219</td>
-                                    <td>Alexander Pierce</td>
-                                    <td>11-7-2014</td>
-                                    <td><span class="tag tag-warning">Pending</span></td>
-                                    <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                                </tr>
-                                <tr>
-                                    <td>657</td>
-                                    <td>Bob Doe</td>
-                                    <td>11-7-2014</td>
-                                    <td><span class="tag tag-primary">Approved</span></td>
-                                    <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                                </tr>
-                                <tr>
-                                    <td>175</td>
-                                    <td>Mike Doe</td>
-                                    <td>11-7-2014</td>
-                                    <td><span class="tag tag-danger">Denied</span></td>
-                                    <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                                </tr>
+                                {% endfor %}
                             </tbody>
                         </table>
                     </div>
