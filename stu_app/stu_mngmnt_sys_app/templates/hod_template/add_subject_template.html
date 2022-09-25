@@ -44,11 +44,9 @@
                                 {% if messages %}
                                 {% for message in messages %}
                                 {% if message.tags == 'success' %}
-                                <div class="alert alert-success" style="margin-top: 10px;text-align: center;">{{ message
-                                    }}</div>
+                                <div class="alert alert-success" style="margin-top: 10px;text-align: center;">{{ message }}</div>
                                 {% elif message.tags == 'error' %}
-                                <div class="alert alert-danger" style="margin-top: 10px;text-align: center;">{{ message
-                                    }}</div>
+                                <div class="alert alert-danger" style="margin-top: 10px;text-align: center;">{{ message }}</div>
                                 {% endif %}
                                 {% endfor %}
                                 {% endif %}

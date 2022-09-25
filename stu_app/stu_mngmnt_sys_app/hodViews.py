@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import messages
-from stu_mngmnt_sys_app.models import CustomUser, Courses
+from stu_mngmnt_sys_app.models import CustomUser, Courses, Subjects
 
 
 # Redndering home page
@@ -107,4 +107,21 @@ def add_subject(request):
 
 # Adding subject
 def add_subject_save(request):
-    pass
+    if request.method != 'POST':
+        return HttpResponse("Method not allowed")
+    else:
+        subject_name = request.POST.get('subject_name')
+        course_id = request.POST.get('course')
+        course = Courses.objects.get(id=course_id)
+        staff_id = request.POST.get('staff')
+        staff = CustomUser.objects.get(id=staff_id)
+
+        try:
+            subject = Subjects(subject_name=subject_name,
+                               course_id=course, staff_id=staff)
+            subject.save()
+            messages.success(request, "Subject added successfully")
+            return HttpResponseRedirect("/add_subject")
+        except:
+            messages.error(request, "Failed to add subject")
+            return HttpResponseRedirect("/add_subject")
