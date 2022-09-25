@@ -25,6 +25,7 @@ urlpatterns = [
     path('', views.showLoginPage),
     path('home', views.homePage),
     path('doLogin', views.doLogin),
+    path('logout_user', views.logout_user, name="logout"),
     path('logout_user', views.logout_user),
     path('admin_home', hodViews.admin_home),
     path('add_staff', hodViews.add_staff),

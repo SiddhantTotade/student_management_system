@@ -47,4 +47,4 @@ def getUserDetails(request):
 # Logout view
 def logout_user(request):
     logout(request)
-    return HttpResponse("/")
+    return HttpResponseRedirect("/")
