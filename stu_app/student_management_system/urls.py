@@ -26,7 +26,7 @@ urlpatterns = [
     path('home', views.homePage),
     path('doLogin', views.doLogin),
     path('logout_user', views.logout_user, name="logout"),
-    path('logout_user', views.logout_user),
+    path('logout_ user', views.logout_user),
     path('admin_home', hodViews.admin_home),
     path('add_staff', hodViews.add_staff),
     path('add_staff_save', hodViews.add_staff_save),
@@ -41,4 +41,5 @@ urlpatterns = [
     path('manage_student', hodViews.manage_student),
     path('manage_course', hodViews.manage_course),
     path('manage_subject', hodViews.manage_subject),
+    path('edit_staff/<str:staff_id>', hodViews.edit_staff),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)+static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
