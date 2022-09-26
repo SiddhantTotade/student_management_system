@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import messages
 from stu_mngmnt_sys_app.models import CustomUser, Courses, Subjects, Staffs, Students
+from django.core.files.storage import FileSystemStorage
 
 
 # Redndering home page
@@ -80,6 +81,11 @@ def add_student_save(request):
         course_id = request.POST.get("course")
         sex = request.POST.get("sex")
 
+        profile_pic = request.FILES['profile_pic']
+        fs = FileSystemStorage()
+        filename = fs.save(profile_pic.name, profile_pic)
+        profile_pic_url = fs.url(filename)
+
         try:
             user = CustomUser.objects.create_user(
                 username=username, password=password, email=email, last_name=last_name, first_name=first_name, user_type=3)
@@ -89,7 +95,7 @@ def add_student_save(request):
             user.students.session_start_year = session_start
             user.students.session_end_year = session_end
             user.students.gender = sex
-            user.students.profile_pic = ""
+            user.students.profile_pic = profile_pic_url
             user.save()
             messages.success(request, "Student added successfully")
             return HttpResponseRedirect("/add_student")
