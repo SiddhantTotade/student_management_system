@@ -181,7 +181,19 @@ def edit_staff_save(request):
             staff_model.address = address
             staff_model.save()
             messages.success(request, "Edit staff successful")
-            return HttpResponseRedirect("/edit_staff"+staff_id)
+            return HttpResponseRedirect("/edit_staff/"+staff_id)
         except:
             messages.error(request, "Failed to edit staff")
-            return HttpResponseRedirect("/edit_staff"+staff_id)
+            return HttpResponseRedirect("/edit_staff/"+staff_id)
+
+
+# Rendering edit_student page
+def edit_student(request, student_id):
+    courses = Courses.objects.all()
+    student = Students.objects.get(admin=student_id)
+    return render(request, "hod_template/edit_student_template.html", {'student': student, 'courses': courses})
+
+
+# Editing student
+def edit_student_save(request):
+    pass

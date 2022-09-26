@@ -43,4 +43,6 @@ urlpatterns = [
     path('manage_subject', hodViews.manage_subject),
     path('edit_staff/<str:staff_id>', hodViews.edit_staff),
     path('edit_staff_save', hodViews.edit_staff_save),
+    path('edit_student/<str:student_id>', hodViews.edit_student),
+    path('edit_student_save', hodViews.edit_student_save),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)+static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
