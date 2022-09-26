@@ -196,4 +196,39 @@ def edit_student(request, student_id):
 
 # Editing student
 def edit_student_save(request):
-    pass
+    if request.method != "POST":
+        return HttpResponse("<h2>Method not allowed</h2>")
+    else:
+        student_id = request.POST.get("student_id")
+        first_name = request.POST.get("first_name")
+        last_name = request.POST.get("last_name")
+        username = request.POST.get("username")
+        email = request.POST.get("email")
+        address = request.POST.get("address")
+        session_start = request.POST.get("session_start")
+        session_end = request.POST.get("session_end")
+        course_id = request.POST.get("course")
+        sex = request.POST.get("sex")
+
+        try:
+            user = CustomUser.objects.get(id=student_id)
+            user.first_name = first_name
+            user.last_name = last_name
+            user.username = username
+            user.email = email
+            user.save()
+
+            student = Students.objects.get(admin=student_id)
+            student.address = address
+            student.session_start_year = session_start
+            student.session_end_year = session_end
+            student.gender = sex
+            course = Courses.objects.get(id=course_id)
+            student.course_id = course
+            student.save()
+
+            messages.success(request, "Edit student successful")
+            return HttpResponseRedirect("/edit_student/"+student_id)
+        except:
+            messages.error(request, "Failed to edit student")
+            return HttpResponseRedirect("/edit_student/"+student_id)

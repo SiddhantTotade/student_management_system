@@ -35,6 +35,7 @@
                                 <label>Username</label>
                                 <input type="text" class="form-control" id="exampleInputPassword1"
                                     placeholder="Username" name="username" value="{{ student.admin.username }}">
+                                <input type="hidden" name="student_id" value="{{ student.admin.id }}">
                             </div>
                             <div class="form-group">
                                 <label>Address</label>
@@ -76,11 +77,9 @@
                                 {% if messages %}
                                 {% for message in messages %}
                                 {% if message.tags == 'success' %}
-                                <div class="alert alert-success" style="margin-top: 10px;text-align: center;">{{ message
-                                    }}</div>
+                                <div class="alert alert-success" style="margin-top: 10px;text-align: center;">{{ message }}</div>
                                 {% elif message.tags == 'error' %}
-                                <div class="alert alert-danger" style="margin-top: 10px;text-align: center;">{{ message
-                                    }}</div>
+                                <div class="alert alert-danger" style="margin-top: 10px;text-align: center;">{{ message }}</div>
                                 {% endif %}
                                 {% endfor %}
                                 {% endif %}
