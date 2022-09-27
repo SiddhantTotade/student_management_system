@@ -216,13 +216,15 @@ def edit_student_save(request):
         course_id = request.POST.get("course")
         sex = request.POST.get("sex")
 
-        if request.FILES.get('profile_pic',False):
+        print(request.FILES.get('profile_pic'))
+
+        if request.FILES.get('profile_pic', False):
             profile_pic = request.FILES['profile_pic']
             fs = FileSystemStorage()
             filename = fs.save(profile_pic.name, profile_pic)
             profile_pic_url = fs.url(filename)
         else:
-            profile_pic = None
+            profile_pic_url = None
 
         try:
             user = CustomUser.objects.get(id=student_id)
