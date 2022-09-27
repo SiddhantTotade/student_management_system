@@ -1,4 +1,5 @@
-from django.contrib.auth import login, logout, authenticate
+from django.urls import reverse
+from django.contrib.auth import login, logout
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from stu_mngmnt_sys_app.email_backend import EmailBackend
@@ -28,9 +29,9 @@ def doLogin(request):
             if user.user_type == "1":
                 return HttpResponseRedirect("/admin_home")
             elif user.user_type == "2":
-                return HttpResponse("Staff login"+str(user.user_type))
+                return HttpResponseRedirect(reverse("staff_home"))
             else:
-                return HttpResponse("Student login"+str(user.user_type))
+                return HttpResponseRedirect(reverse("student_home"))
         else:
             messages.error(request, "Invalid login details")
             return HttpResponseRedirect("/")

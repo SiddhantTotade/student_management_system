@@ -24,7 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     # HOD url path
-    path('', views.showLoginPage),
+    path('', views.showLoginPage,name="show_login"),
     path('home', views.homePage),
     path('doLogin', views.doLogin, name="do_login"),
     path('logout_user', views.logout_user, name="logout"),
@@ -55,4 +55,5 @@ urlpatterns = [
 
     # Staff url path
     path('staff_home', staffViews.staff_home, name="staff_home"),
+    path('student_home', studentViews.student_home, name="student_home"),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)+static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
