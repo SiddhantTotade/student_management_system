@@ -160,7 +160,7 @@ def manage_subject(request):
 # Rendering edit_staff page
 def edit_staff(request, staff_id):
     staff = Staffs.objects.get(admin=staff_id)
-    return render(request, "hod_template/edit_staff_template.html", {'staff': staff})
+    return render(request, "hod_template/edit_staff_template.html", {'staff': staff, 'id': staff_id})
 
 
 # Editing staff
@@ -197,7 +197,7 @@ def edit_staff_save(request):
 def edit_student(request, student_id):
     courses = Courses.objects.all()
     student = Students.objects.get(admin=student_id)
-    return render(request, "hod_template/edit_student_template.html", {'student': student, 'courses': courses})
+    return render(request, "hod_template/edit_student_template.html", {'student': student, 'courses': courses, 'id': student_id})
 
 
 # Editing student
@@ -258,7 +258,7 @@ def edit_subject(request, subject_id):
     subject = Subjects.objects.get(id=subject_id)
     courses = Courses.objects.all()
     staffs = CustomUser.objects.filter(user_type=2)
-    return render(request, "hod_template/edit_subject_template.html", {'subject': subject, 'staffs': staffs, 'courses': courses})
+    return render(request, "hod_template/edit_subject_template.html", {'subject': subject, 'staffs': staffs, 'courses': courses, 'id': subject_id})
 
 
 # Editing subject
@@ -291,7 +291,7 @@ def edit_subject_save(request):
 # Rendering edit_course page
 def edit_course(request, course_id):
     course = Courses.objects.get(id=course_id)
-    return render(request, "hod_template/edit_course_template.html", {'course': course})
+    return render(request, "hod_template/edit_course_template.html", {'course': course, 'id': course_id})
 
 
 # Editing course
