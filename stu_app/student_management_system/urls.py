@@ -18,16 +18,17 @@ from django.contrib import admin
 from django.conf.urls.static import static
 from django.urls import path
 from student_management_system import settings
-from stu_mngmnt_sys_app import views, hodViews
+from stu_mngmnt_sys_app import views, hodViews, studentViews, staffViews
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 
+    # HOD url path
     path('', views.showLoginPage),
     path('home', views.homePage),
     path('doLogin', views.doLogin, name="do_login"),
     path('logout_user', views.logout_user, name="logout"),
-    path('admin_home', hodViews.admin_home,name="admin_home"),
+    path('admin_home', hodViews.admin_home, name="admin_home"),
     path('add_staff', hodViews.add_staff, name="add_staff"),
     path('add_staff_save', hodViews.add_staff_save, name="add_staff_save"),
     path('add_course', hodViews.add_course, name="add_course"),
@@ -51,4 +52,7 @@ urlpatterns = [
     path('edit_subject_save', hodViews.edit_subject_save, name="edit_subject_save"),
     path('edit_course/<str:course_id>', hodViews.edit_course, name="edit_course"),
     path('edit_course_save', hodViews.edit_course_save, name="edit_course_save"),
+
+    # Staff url path
+    path('staff_home', staffViews.staff_home, name="staff_home"),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)+static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
