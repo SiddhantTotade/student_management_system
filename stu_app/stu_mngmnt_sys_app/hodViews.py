@@ -80,8 +80,7 @@ def add_student_save(request):
             password = form.cleaned_data["password"]
             email = form.cleaned_data["email"]
             address = form.cleaned_data["address"]
-            session_start = form.cleaned_data["session_start"]
-            session_end = form.cleaned_data["session_end"]
+            session_year_id = form.cleaned_data["session_year_id"]
             course_id = form.cleaned_data["course"]
             sex = form.cleaned_data["sex"]
 
@@ -96,8 +95,8 @@ def add_student_save(request):
                 user.students.address = address
                 course_obj = Courses.objects.get(id=course_id)
                 user.students.course_id = course_obj
-                user.students.session_start_year = session_start
-                user.students.session_end_year = session_end
+                session_year = SessionYearModel.object.get(id=session_year_id)
+                user.students.session_year_id = session_year
                 user.students.gender = sex
                 user.students.profile_pic = profile_pic_url
                 user.save()
@@ -231,8 +230,7 @@ def edit_student_save(request):
             username = form.cleaned_data["username"]
             email = form.cleaned_data["email"]
             address = form.cleaned_data["address"]
-            session_start = form.cleaned_data["session_start"]
-            session_end = form.cleaned_data["session_end"]
+            session_year_id = form.cleaned_data["session_year_id"]
             course_id = form.cleaned_data["course"]
             sex = form.cleaned_data["sex"]
 
@@ -256,8 +254,9 @@ def edit_student_save(request):
 
                 student = Students.objects.get(admin=student_id)
                 student.address = address
-                student.session_start_year = session_start
-                student.session_end_year = session_end
+                student.session_year_id = session_year_id
+                session_year = SessionYearModel.object.get(id=session_year_id)
+                user.students.session_year_id = session_year
                 student.gender = sex
                 course = Courses.objects.get(id=course_id)
                 student.course_id = course
