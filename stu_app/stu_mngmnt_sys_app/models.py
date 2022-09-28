@@ -5,6 +5,13 @@ from django.db.models.signals import post_save
 # Create your models here.
 
 
+# Session year model
+class SessionYearModel(models.Model):
+    id = models.AutoField(primary_key=True)
+    session_start_year = models.DateField()
+    session_end_year = models.DateField()
+
+
 # CustomUser model
 class CustomUser(AbstractUser):
     user_type_data = ((1, "HOD"), (2, "Staff"), (3, "Student"))
@@ -61,9 +68,9 @@ class Students(models.Model):
     gender = models.CharField(max_length=255)
     profile_pic = models.FileField()
     address = models.TextField()
+    session_year_id = models.ForeignKey(
+        SessionYearModel, on_delete=models.CASCADE)
     course_id = models.ForeignKey(Courses, on_delete=models.DO_NOTHING)
-    session_start_year = models.DateField()
-    session_end_year = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
     objects = models.Manager()
@@ -74,6 +81,8 @@ class Attendance(models.Model):
     id = models.AutoField(primary_key=True)
     subject_id = models.ForeignKey(Subjects, on_delete=models.DO_NOTHING)
     attendance_date = models.DateTimeField(auto_now_add=True)
+    session_year_id = models.ForeignKey(
+        SessionYearModel, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
     objects = models.Manager()

@@ -3,7 +3,7 @@ from django.shortcuts import render
 from .forms import *
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import messages
-from stu_mngmnt_sys_app.models import CustomUser, Courses, Subjects, Staffs, Students
+from stu_mngmnt_sys_app.models import CustomUser, Courses, Subjects, SessionYearModel, Staffs, Students
 from django.core.files.storage import FileSystemStorage
 
 
@@ -336,3 +336,27 @@ def edit_course_save(request):
         except:
             messages.error(request, "Failed to edit course")
             return HttpResponseRedirect(reverse("edit_course",  kwargs={'course_id': course_id}))
+
+
+# Rendering manage_session page
+def manage_session(request):
+    return render(request, "hod_template/manage_session_template.html")
+
+
+# Adding session
+def add_session_save(request):
+    if request.method != "POST":
+        return HttpResponseRedirect(reverse("manage_session"))
+    else:
+        session_start_year = request.POST.get("session_start")
+        session_end_year = request.POST.get("session_end")
+
+        try:
+            session_year = SessionYearModel(
+                session_start_year=session_start_year, session_end_year=session_end_year)
+            session_year.save()
+            messages.success(request, "Added session successful")
+            return HttpResponseRedirect(reverse("manage_session"))
+        except:
+            messages.error(request, "Failed to add session")
+            return HttpResponseRedirect(reverse("manage_session"))
