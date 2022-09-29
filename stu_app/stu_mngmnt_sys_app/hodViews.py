@@ -208,8 +208,7 @@ def edit_student(request, student_id):
     form.fields['address'].initial = student.address
     form.fields['course'].initial = student.course_id.id
     form.fields['sex'].initial = student.gender
-    form.fields['session_start'].initial = student.session_start_year
-    form.fields['session_end'].initial = student.session_end_year
+    form.fields['session_year_id'].initial = student.session_year_id.id
     return render(request, "hod_template/edit_student_template.html", {'form': form, 'id': student_id, 'username': student.admin.username})
 
 
@@ -234,8 +233,6 @@ def edit_student_save(request):
             course_id = form.cleaned_data["course"]
             sex = form.cleaned_data["sex"]
 
-            print(request.FILES.get('profile_pic'))
-
             if request.FILES.get('profile_pic', False):
                 profile_pic = request.FILES['profile_pic']
                 fs = FileSystemStorage()
@@ -254,7 +251,6 @@ def edit_student_save(request):
 
                 student = Students.objects.get(admin=student_id)
                 student.address = address
-                student.session_year_id = session_year_id
                 session_year = SessionYearModel.object.get(id=session_year_id)
                 user.students.session_year_id = session_year
                 student.gender = sex
