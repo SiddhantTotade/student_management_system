@@ -77,8 +77,8 @@ def add_student_save(request):
             first_name = form.cleaned_data["first_name"]
             last_name = form.cleaned_data["last_name"]
             username = form.cleaned_data["username"]
-            password = form.cleaned_data["password"]
             email = form.cleaned_data["email"]
+            password = form.cleaned_data["password"]
             address = form.cleaned_data["address"]
             session_year_id = form.cleaned_data["session_year_id"]
             course_id = form.cleaned_data["course"]
@@ -105,6 +105,9 @@ def add_student_save(request):
             except:
                 messages.error(request, "Failed to add student")
                 return HttpResponseRedirect(reverse("add_student"))
+        else:
+            form = AddStudentForm(request.POST)
+            return render(request, 'hod_template/add_student_template.html', {'form': form})
 
 
 # Rendering add_subject page

@@ -1,8 +1,9 @@
+import json
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse, HttpResponse
 from django.core import serializers
-from .models import Subjects, SessionYearModel, Students
+from .models import Subjects, SessionYearModel, Students, Attendance, AttendanceReport
 
 
 # Rendering staff_home page
@@ -27,5 +28,23 @@ def get_students(request):
     session_model = SessionYearModel.object.get(id=session_year)
     students = Students.objects.filter(
         course_id=subject.course_id, session_year_id=session_model)
-    student_data = serializers.serialize("python", students)
-    return JsonResponse(student_data, content_type="application/json", safe=False)
+    list_data = []
+    for student in students:
+        data_small = {"id": student.admin.id,
+                      "name": student.admin.first_name+" "+student.admin.last_name}
+        list_data.append(data_small)
+    return JsonResponse(json.dumps(list_data), content_type="application/json", safe=False)
+
+
+# Save attendance
+@csrf_exempt
+def save_attendance_data(request):
+    student_id = request.POST.getlist("student_id[]")
+    subject_id = request.POST.get("subject_id")
+    attendance_date = request.POST.get("attendance_date")
+    session_year_id = request.POST.get("session_year_id")
+    subject_model = Subjects.objects.get(id=subject_id)
+    session_model = SessionYearModel.object.get(id=session_year_id)
+    attendance = Attendance(subject_id=subject_model,
+                            attendance_date=attendance_date, session_year_id=session_model)
+    attendance.save()

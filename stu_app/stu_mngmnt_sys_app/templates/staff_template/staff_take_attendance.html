@@ -50,8 +50,10 @@
                     <div class="card-footer">
                         <button type="button" class="btn btn-primary btn-block" id="fetch_student">Fetch Student</button>
                     </div>
-                </div>
+                    <div id="student_data">
 
+                    </div>
+                </div>
             </div>
         </div>
     </div><!-- /.container-fluid -->
@@ -67,16 +69,22 @@
             var subject=$("#subject").val()
             var session_year=$("#session_year").val()
 
-            $.ajax({
-                url:"{% url 'get_students' %}",
+            $(document).on("click","#save_attendance",function(){
+                var data = $("input[name='student_data[]']").map(function(){return $(this).val();}).get()
+                var attendance_date = $("#attendance_date").val()
+                var subject_id = $("#subject").val()
+                var session_year_id = $("#session_year").val()
+
+                $.ajax({
+                url:"{% url 'save_attendance_data' %}",
                 type:'POST',
-                data:{subject:subject,session_year:session_year},
+                data:{student_id:student_data,attendance_date:attendance_date,subject_id:subject_id,session_year_id:session_year_id},
             })
             .done(function(response){
-                console.log(response);
             })
             .fail(function(){
                 alert("Error in fetching student")
+            })
             })
         })
     })

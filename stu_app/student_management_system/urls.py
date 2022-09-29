@@ -59,5 +59,6 @@ urlpatterns = [
     path('staff_home', staffViews.staff_home, name="staff_home"),
     path('student_home', studentViews.student_home, name="student_home"),
     path('staff_take_attendance', staffViews.staff_take_attendance, name="staff_take_attendance"),
+    path('save_attendance_data', staffViews.save_attendance_data, name="save_attendance_data"),
     path('get_students', staffViews.get_students, name="get_students"),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)+static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
