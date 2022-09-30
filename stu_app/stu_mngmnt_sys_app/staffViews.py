@@ -73,11 +73,10 @@ def staff_update_attendance(request):
 def get_attendance_date(request):
     subject = request.POST.get("subject")
     session_year_id = request.POST.get("session_year_id")
-    subject_obj = request.POST.get(id=subject)
+    subject_obj = Subjects.objects.get(id=subject)
     session_year_obj = SessionYearModel.object.get(id=session_year_id)
     attendance = Attendance.objects.filter(
         subject_id=subject_obj, session_year_id=session_year_obj)
-    print(attendance)
     attendance_obj = []
 
     for attendance_single in attendance:
@@ -85,4 +84,4 @@ def get_attendance_date(request):
                 "session_year_id": attendance_single.session_year_id.id}
         attendance_obj.append(data)
 
-    # return JsonResponse(json.dumps(attendance_obj), safe=False)
+    return JsonResponse(json.dumps(attendance_obj), safe=False)
