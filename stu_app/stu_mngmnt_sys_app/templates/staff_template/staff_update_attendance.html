@@ -41,6 +41,9 @@
                             <select class="form-control" name="attendance_date" id="attendance_date">
                             </select>
                         </div>
+                        <div class="form-group">
+                            <div class="alert alert-danger" id="error_attendance" style="display:none;"></div>
+                        </div>
                         <div class="from-group">
                             <!-- /.col -->
                             {% if messages %}
@@ -83,10 +86,23 @@
                 data: { subject: subject, session_year_id: session_year_id },
             })
                 .done(function (response) {
-                    console.log(response);
+                    var json_data = JSON.parse(response)
+
+                    if (json_data.length>0){
+
+                        var html_data=""
+                        for (key in json_data){
+                            html_data+="<option value="+json_data[key]["id"]+">"+json_data[key]["attendance_date"]+"</option>"
+                        }
+                        $("#attendance_date").html(html_data);
+                    }else{
+                        $("#error_attendance").html("No attendance data found")
+                        $("#error_attendance").show()
+                    }
                 })
                 .fail(function () {
-                    alert("Error in fetching student")
+                    alert("Error in fetching attendance")
+                    $("#error_attendance").html("")
                 })
         })
     })
