@@ -24,7 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     # HOD url path
-    path('', views.showLoginPage,name="show_login"),
+    path('', views.showLoginPage, name="show_login"),
     path('home', views.homePage),
     path('doLogin', views.doLogin, name="do_login"),
     path('logout_user', views.logout_user, name="logout"),
@@ -58,7 +58,13 @@ urlpatterns = [
     # Staff url path
     path('staff_home', staffViews.staff_home, name="staff_home"),
     path('student_home', studentViews.student_home, name="student_home"),
-    path('staff_take_attendance', staffViews.staff_take_attendance, name="staff_take_attendance"),
-    path('save_attendance_data', staffViews.save_attendance_data, name="save_attendance_data"),
+    path('staff_take_attendance', staffViews.staff_take_attendance,
+         name="staff_take_attendance"),
+    path('staff_update_attendance', staffViews.staff_update_attendance,
+         name="staff_update_attendance"),
+    path('save_attendance_data', staffViews.save_attendance_data,
+         name="save_attendance_data"),
+    path('get_attendance_date', staffViews.get_attendance_date,
+         name="get_attendance_date"),
     path('get_students', staffViews.get_students, name="get_students"),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)+static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

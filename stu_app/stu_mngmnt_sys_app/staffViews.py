@@ -59,3 +59,30 @@ def save_attendance_data(request):
         return HttpResponse("OK")
     except:
         return HttpResponse("ERR")
+
+
+# Rendering staff_update_attendance page
+def staff_update_attendance(request):
+    subjects = Subjects.objects.filter(staff_id=request.user.id)
+    session_year_id = SessionYearModel.object.all()
+    return render(request, "staff_template/staff_update_attendance.html", {'subjects': subjects, 'session_year_id': session_year_id})
+
+
+# Getting attendance date
+@csrf_exempt
+def get_attendance_date(request):
+    subject = request.POST.get("subject")
+    session_year_id = request.POST.get("session_year_id")
+    subject_obj = request.POST.get(id=subject)
+    session_year_obj = SessionYearModel.object.get(id=session_year_id)
+    attendance = Attendance.objects.filter(
+        subject_id=subject_obj, session_year_id=session_year_obj)
+    print(attendance)
+    attendance_obj = []
+
+    for attendance_single in attendance:
+        data = {"id": attendance_single.id, "attendance_date": str(attendance_single.attendance_date),
+                "session_year_id": attendance_single.session_year_id.id}
+        attendance_obj.append(data)
+
+    # return JsonResponse(json.dumps(attendance_obj), safe=False)

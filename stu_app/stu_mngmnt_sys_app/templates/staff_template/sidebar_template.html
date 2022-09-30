@@ -44,6 +44,17 @@
                         </p>
                     </a>
                 </li>
+                </li>
+                <li class="nav-item">
+                    {% url 'staff_update_attendance' as staff_update_attendance %}
+                    <a href="{% url 'staff_update_attendance' %}"
+                        class="nav-link {% if request.path == staff_update_attendance %} active {% endif %}">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Update Attendance
+                        </p>
+                    </a>
+                </li>
             </ul>
         </nav>
         <!-- /.sidebar-menu -->
