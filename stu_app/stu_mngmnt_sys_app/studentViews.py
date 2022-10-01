@@ -1,7 +1,9 @@
 import datetime
 from django.shortcuts import render
-from .models import Students, Subjects, CustomUser, Attendance, AttendanceReport
+from .models import Students, Subjects, CustomUser, Attendance, AttendanceReport, LeaveReportStudent, FeedbackStudent
 from django.http import HttpResponse, HttpResponseRedirect
+from django.urls import reverse
+from django.contrib import messages
 
 
 # Rendering student home page
@@ -29,14 +31,62 @@ def student_view_attendance_post(request):
 
     subject_obj = Subjects.objects.get(id=subject_id)
     user_object = CustomUser.objects.get(id=request.user.id)
-
     stud_obj = Students.objects.get(admin=user_object)
+
     attendance = Attendance.objects.filter(attendance_date__range=(
         start_data_parse, end_data_parse), subject_id=subject_obj)
     attendance_reports = AttendanceReport.objects.filter(
         attendance_id__in=attendance, student_id=stud_obj)
 
-    # for attendance_report in attendance_reports:
-    #     print("Date : "+str(attendance_report.attendance_id.attendance_date) +
-    #           "Status : "+str(attendance_report.status))
     return render(request, "student_template/student_attendance_data.html", {'attendance_reports': attendance_reports})
+
+
+# Rendering staff_leave page
+def student_apply_leave(request):
+    student_obj = Students.objects.get(admin=request.user.id)
+    leave_data = LeaveReportStudent.objects.filter(student_id=student_obj)
+    return render(request, "student_template/student_apply_leave.html", {'leave_data': leave_data})
+
+
+# Saving staff leave
+def student_apply_leave_save(request):
+    if request.method != "POST":
+        return HttpResponseRedirect(reverse("staff_apply_leave"))
+    else:
+        leave_date = request.POST.get("leave_date")
+        leave_msg = request.POST.get("leave_msg")
+        student_obj = Students.objects.get(admin=request.user.id)
+        try:
+            leave_report = LeaveReportStudent(
+                student_id=student_obj, leave_date=leave_date, leave_message=leave_msg, leave_status=0)
+            leave_report.save()
+            messages.success(request, "Successfully applied for leave")
+            return HttpResponseRedirect(reverse("student_apply_leave"))
+        except:
+            messages.error(request, "Failed to applied for leave")
+            return HttpResponseRedirect(reverse("student_apply_leave"))
+
+
+# Rendering staff_feedback page
+def student_feedback(request):
+    student_id = Students.objects.get(admin=request.user.id)
+    feedback_data = FeedbackStudent.objects.filter(student_id=student_id)
+    return render(request, "student_template/student_feedback.html", {'feedback_data': feedback_data})
+
+
+# Saving staff feedback
+def student_feedback_save(request):
+    if request.method != "POST":
+        return HttpResponseRedirect(reverse("student_apply_leave"))
+    else:
+        feedback_msg = request.POST.get("feedback_msg")
+        student_obj = Students.objects.get(admin=request.user.id)
+        try:
+            feedback = FeedbackStudent(
+                student_id=student_obj, feedback=feedback_msg, feedback_reply="")
+            feedback.save()
+            messages.success(request, "Thankyou for feedback")
+            return HttpResponseRedirect(reverse("student_feedback"))
+        except:
+            messages.error(request, "Feedback submission failed")
+            return HttpResponseRedirect(reverse("student_feedback"))

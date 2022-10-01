@@ -1,0 +1,90 @@
+{% extends 'student_template/base_template.html' %}
+{% block page_title %}Leave Report and Apply{% endblock %}
+{% block main_content %}
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- general form elements -->
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Apply for leave</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <form action="{% url 'student_apply_leave_save' %}" method="POST">
+                        {% csrf_token %}
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label>Leave date</label>
+                                <input type="date" name="leave_date" id="" placeholder="Leave date"
+                                    class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Leave resaon</label>
+                                <textarea name="leave_msg" class="form-control" rows="6"></textarea>
+                            </div>
+                            <div class="from-group">
+                                <!-- /.col -->
+                                {% if messages %}
+                                {% for message in messages %}
+                                {% if message.tags == 'success' %}
+                                <div class="alert alert-success" style="margin-top: 10px;text-align: center;">{{ message }}
+                                </div>
+                                {% elif message.tags == 'error' %}
+                                <div class="alert alert-danger" style="margin-top: 10px;text-align: center;">{{ message }}
+                                </div>
+                                {% endif %}
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-primary btn-block" id="fetch_student">Apply for
+                                leave</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Leave history</h3>
+                    </div>
+
+                    <div class="table"></div>
+                    <table class="table">
+                        <tr>
+                            <th>ID</th>
+                            <th>Leave date</th>
+                            <th>Leave message</th>
+                            <th>Leave status</th>
+                        </tr>
+                        {% for row in leave_data %}
+                        <tr>
+                            <td>{{ row.id }}</td>
+                            <td>{{ row.leave_date }}</td>
+                            <td>{{ row.leave_message }}</td>
+                            <td>
+                                {% if row.leave_status == 1 %}
+                                <span class="alert alert-success">Approved</span>
+                                {% elif row.leave_status == 2 %}
+                                <span class="alert alert-danger">Rejected</span>
+                                {% else %}
+                                <span class="alert alert-info">Pending</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+                <!-- /.card-header -->
+                <!-- form start -->
+            </div>
+        </div>
+    </div>
+    </div><!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+{% endblock %}
