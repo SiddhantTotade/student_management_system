@@ -1,9 +1,8 @@
-import imp
 import json
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
-from .models import Staffs, Subjects, SessionYearModel, Students, Attendance, AttendanceReport, LeaveReportStaff
+from .models import Staffs, Subjects, SessionYearModel, Students, Attendance, AttendanceReport, LeaveReportStaff, FeedbackStaff
 from django.contrib import messages
 from django.urls import reverse
 
@@ -124,11 +123,11 @@ def save_updateattendance_data(request):
         return HttpResponse("ERR")
 
 
-# Rendering staff leave page
+# Rendering staff_leave page
 def staff_apply_leave(request):
     staff_obj = Staffs.objects.get(admin=request.user.id)
     leave_data = LeaveReportStaff.objects.filter(staff_id=staff_obj)
-    return render(request, "staff_template/staff_apply_leave.html",{'leave_data':leave_data})
+    return render(request, "staff_template/staff_apply_leave.html", {'leave_data': leave_data})
 
 
 # Saving staff leave
@@ -150,5 +149,26 @@ def staff_apply_leave_save(request):
             return HttpResponseRedirect(reverse("staff_apply_leave"))
 
 
+# Rendering staff_feedback page
 def staff_feedback(request):
-    pass
+    staff_id = Staffs.objects.get(admin=request.user.id)
+    feedback_data = FeedbackStaff.objects.filter(staff_id=staff_id)
+    return render(request, "staff_template/staff_feedback.html", {'feedback_data': feedback_data})
+
+
+# Saving staff feedback
+def staff_feedback_save(request):
+    if request.method != "POST":
+        return HttpResponseRedirect(reverse("staff_apply_leave"))
+    else:
+        feedback_msg = request.POST.get("feedback_msg")
+        staff_obj = Staffs.objects.get(admin=request.user.id)
+        try:
+            feedback = FeedbackStaff(
+                staff_id=staff_obj, feedback=feedback_msg, feedback_reply="")
+            feedback.save()
+            messages.success(request, "Thankyou for feedback")
+            return HttpResponseRedirect(reverse("staff_feedback"))
+        except:
+            messages.error(request, "Feedback submission failed")
+            return HttpResponseRedirect(reverse("staff_feedback"))

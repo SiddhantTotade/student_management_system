@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 import os
 from pathlib import Path
+from stu_mngmnt_sys_app import password
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -63,7 +64,7 @@ ROOT_URLCONF = 'student_management_system.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['stu_mngmnt_sys_app/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -133,6 +134,16 @@ USE_TZ = True
 STATIC_URL = 'static/'
 AUTH_USER_MODEL = 'stu_mngmnt_sys_app.CustomUser'
 AUTHENTICATION_BACKENDS = ['stu_mngmnt_sys_app.email_backend.EmailBackend']
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+# EMAIL_FILE_PATH=os.path.join(BASE_DIR,'sent_mails')
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = '587'
+EMAIL_HOST_USER = 'noreply.projectsms@gmail.com'
+EMAIL_HOST_PASSWORD = password.password
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = "Student Management System"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

@@ -14,6 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
+from django.urls import include
 from django.contrib import admin
 from django.conf.urls.static import static
 from django.urls import path
@@ -22,6 +23,7 @@ from stu_mngmnt_sys_app import views, hodViews, studentViews, staffViews
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('accounts/', include('django.contrib.auth.urls')),
 
     # HOD url path
     path('', views.showLoginPage, name="show_login"),
@@ -77,4 +79,6 @@ urlpatterns = [
          name="staff_apply_leave_save"),
     path('staff_feedback', staffViews.staff_feedback,
          name="staff_feedback"),
+    path('staff_feedback_save', staffViews.staff_feedback_save,
+         name="staff_feedback_save"),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)+static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
