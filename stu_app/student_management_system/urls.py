@@ -58,6 +58,7 @@ urlpatterns = [
     # Staff url path
     path('staff_home', staffViews.staff_home, name="staff_home"),
     path('student_home', studentViews.student_home, name="student_home"),
+    path('get_students', staffViews.get_students, name="get_students"),
     path('staff_take_attendance', staffViews.staff_take_attendance,
          name="staff_take_attendance"),
     path('staff_update_attendance', staffViews.staff_update_attendance,
@@ -70,5 +71,10 @@ urlpatterns = [
          name="get_attendance_date"),
     path('get_attendance_student', staffViews.get_attendance_student,
          name="get_attendance_student"),
-    path('get_students', staffViews.get_students, name="get_students"),
+    path('staff_apply_leave', staffViews.staff_apply_leave,
+         name="staff_apply_leave"),
+    path('staff_apply_leave_save', staffViews.staff_apply_leave_save,
+         name="staff_apply_leave_save"),
+    path('staff_feedback', staffViews.staff_feedback,
+         name="staff_feedback"),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)+static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

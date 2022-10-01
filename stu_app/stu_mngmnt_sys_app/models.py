@@ -112,6 +112,18 @@ class LeaveReportStudent(models.Model):
     objects = models.Manager()
 
 
+# LeaveReportStaff model
+class LeaveReportStaff(models.Model):
+    id = models.AutoField(primary_key=True)
+    staff_id = models.ForeignKey(Staffs, on_delete=models.CASCADE)
+    leave_date = models.CharField(max_length=255)
+    leave_message = models.TextField()
+    leave_status = models.IntegerField(default=0)
+    create_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
+    objects = models.Manager()
+
+
 # FeedbackStudent model
 class FeedbackStudent(models.Model):
     id = models.AutoField(primary_key=True)

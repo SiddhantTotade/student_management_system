@@ -1,8 +1,11 @@
+import imp
 import json
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse, HttpResponse
-from .models import Subjects, SessionYearModel, Students, Attendance, AttendanceReport
+from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
+from .models import Staffs, Subjects, SessionYearModel, Students, Attendance, AttendanceReport, LeaveReportStaff
+from django.contrib import messages
+from django.urls import reverse
 
 
 # Rendering staff_home page
@@ -101,7 +104,7 @@ def get_attendance_student(request):
     return JsonResponse(json.dumps(list_data), content_type="application/json", safe=False)
 
 
-# save updated student attendance
+# Save updated student attendance
 @csrf_exempt
 def save_updateattendance_data(request):
     student_id = request.POST.get("student_id")
@@ -114,8 +117,38 @@ def save_updateattendance_data(request):
             student = Students.objects.get(admin=stud['id'])
             attendance_report = AttendanceReport.objects.get(
                 student_id=student, attendance_id=attendance)
-            attendance_report.status=stud['status']
+            attendance_report.status = stud['status']
             attendance_report.save()
         return HttpResponse("OK")
     except:
         return HttpResponse("ERR")
+
+
+# Rendering staff leave page
+def staff_apply_leave(request):
+    staff_obj = Staffs.objects.get(admin=request.user.id)
+    leave_data = LeaveReportStaff.objects.filter(staff_id=staff_obj)
+    return render(request, "staff_template/staff_apply_leave.html",{'leave_data':leave_data})
+
+
+# Saving staff leave
+def staff_apply_leave_save(request):
+    if request.method != "POST":
+        return HttpResponseRedirect(reverse("staff_apply_leave"))
+    else:
+        leave_date = request.POST.get("leave_date")
+        leave_msg = request.POST.get("leave_msg")
+        staff_obj = Staffs.objects.get(admin=request.user.id)
+        try:
+            leave_report = LeaveReportStaff(
+                staff_id=staff_obj, leave_date=leave_date, leave_message=leave_msg, leave_status=0)
+            leave_report.save()
+            messages.success(request, "Successfully applied for leave")
+            return HttpResponseRedirect(reverse("staff_apply_leave"))
+        except:
+            messages.error(request, "Failed to applied for leave")
+            return HttpResponseRedirect(reverse("staff_apply_leave"))
+
+
+def staff_feedback(request):
+    pass
