@@ -59,7 +59,6 @@ urlpatterns = [
 
     # Staff url path
     path('staff_home', staffViews.staff_home, name="staff_home"),
-    path('student_home', studentViews.student_home, name="student_home"),
     path('get_students', staffViews.get_students, name="get_students"),
     path('staff_take_attendance', staffViews.staff_take_attendance,
          name="staff_take_attendance"),
@@ -81,4 +80,13 @@ urlpatterns = [
          name="staff_feedback"),
     path('staff_feedback_save', staffViews.staff_feedback_save,
          name="staff_feedback_save"),
+    path('staff_feedback_save', staffViews.staff_feedback_save,
+         name="staff_feedback_save"),
+
+    # Student url path
+    path('student_home', studentViews.student_home, name="student_home"),
+    path('student_view_attendance', studentViews.student_view_attendance,
+         name="student_view_attendance"),
+    path('student_view_attendance_post', studentViews.student_view_attendance_post,
+         name="student_view_attendance_post"),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)+static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
