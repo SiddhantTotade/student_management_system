@@ -3,7 +3,7 @@ from django.shortcuts import render
 from .forms import *
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import messages
-from stu_mngmnt_sys_app.models import CustomUser, Courses, Subjects, SessionYearModel, Staffs, Students
+from stu_mngmnt_sys_app.models import CustomUser, Courses, Subjects, SessionYearModel, Staffs, Students, FeedbackStaff, FeedbackStudent
 from django.core.files.storage import FileSystemStorage
 from django.views.decorators.csrf import csrf_exempt
 
@@ -361,7 +361,6 @@ def add_session_save(request):
             return HttpResponseRedirect(reverse("manage_session"))
 
 
-
 # Checking email exist or not
 @csrf_exempt
 def check_email_exist(request):
@@ -382,3 +381,28 @@ def check_username_exist(request):
         return HttpResponse(True)
     else:
         return HttpResponse(False)
+
+
+# Rendering student feedback page
+def student_feedback_message(request):
+    feedbacks = FeedbackStudent.objects.all()
+    return render(request, "hod_template/student_feedback_template.html",{'feedbacks':feedbacks})
+
+
+# Repling message
+@csrf_exempt
+def student_feedback_message_replied(request):
+    feedback_id = request.POST.get("id")
+    feedback_message = request.POST.get("message")
+
+    try:
+        feedback = FeedbackStudent.objects.get(id=feedback_id)
+        feedback.feedback_reply = feedback_message
+        feedback.save()
+        return HttpResponse("True")
+    except:
+        return HttpResponse("False")
+
+
+def staff_feedback_message(request):
+    pass
