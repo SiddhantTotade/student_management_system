@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import messages
 from stu_mngmnt_sys_app.models import CustomUser, Courses, Subjects, SessionYearModel, Staffs, Students
 from django.core.files.storage import FileSystemStorage
+from django.views.decorators.csrf import csrf_exempt
 
 
 # Redndering home page
@@ -358,3 +359,26 @@ def add_session_save(request):
         except:
             messages.error(request, "Failed to add session")
             return HttpResponseRedirect(reverse("manage_session"))
+
+
+
+# Checking email exist or not
+@csrf_exempt
+def check_email_exist(request):
+    email = request.POST.get("email")
+    user_obj = CustomUser.objects.filter(email=email).exists()
+    if user_obj:
+        return HttpResponse(True)
+    else:
+        return HttpResponse(False)
+
+
+# Checking username exist or not
+@csrf_exempt
+def check_username_exist(request):
+    username = request.POST.get("username")
+    user_obj = CustomUser.objects.filter(username=username).exists()
+    if user_obj:
+        return HttpResponse(True)
+    else:
+        return HttpResponse(False)
