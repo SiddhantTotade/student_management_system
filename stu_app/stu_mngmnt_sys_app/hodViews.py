@@ -3,7 +3,7 @@ from django.shortcuts import render
 from .forms import *
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import messages
-from stu_mngmnt_sys_app.models import CustomUser, Courses, Subjects, SessionYearModel, Staffs, Students, FeedbackStaff, FeedbackStudent
+from stu_mngmnt_sys_app.models import CustomUser, Courses, Subjects, SessionYearModel, Staffs, Students, FeedbackStaff, FeedbackStudent, LeaveReportStaff, LeaveReportStudent
 from django.core.files.storage import FileSystemStorage
 from django.views.decorators.csrf import csrf_exempt
 
@@ -386,7 +386,7 @@ def check_username_exist(request):
 # Rendering student feedback page
 def student_feedback_message(request):
     feedbacks = FeedbackStudent.objects.all()
-    return render(request, "hod_template/student_feedback_template.html",{'feedbacks':feedbacks})
+    return render(request, "hod_template/student_feedback_template.html", {'feedbacks': feedbacks})
 
 
 # Repling message of student
@@ -404,12 +404,10 @@ def student_feedback_message_replied(request):
         return HttpResponse("False")
 
 
-
 # Rendering staff feedback page
 def staff_feedback_message(request):
     feedbacks = FeedbackStaff.objects.all()
-    return render(request, "hod_template/staff_feedback_template.html",{'feedbacks':feedbacks})
-
+    return render(request, "hod_template/staff_feedback_template.html", {'feedbacks': feedbacks})
 
 
 # Replying message of staff
@@ -425,3 +423,47 @@ def staff_feedback_message_replied(request):
         return HttpResponse("True")
     except:
         return HttpResponse("False")
+
+
+# Rendering student leave view
+def student_leave_view(request):
+    leaves = LeaveReportStudent.objects.all()
+    return render(request, "hod_template/student_leave_view.html", {'leaves': leaves})
+
+
+# Rendering staff leave view
+def staff_leave_view(request):
+    leaves = LeaveReportStaff.objects.all()
+    return render(request, "hod_template/staff_leave_view.html", {'leaves': leaves})
+
+
+# Approving leave for studeent
+def student_approve_leave(request, leave_id):
+    leave = LeaveReportStudent.objects.get(id=leave_id)
+    leave.leave_status = 1
+    leave.save()
+    return HttpResponseRedirect(reverse("student_leave_view"))
+
+
+# Disapproving leave for studeent
+def student_disapprove_leave(request, leave_id):
+    leave = LeaveReportStudent.objects.get(id=leave_id)
+    leave.leave_status = 2
+    leave.save()
+    return HttpResponseRedirect(reverse("student_leave_view"))
+
+
+# Approving leave for studeent
+def staff_approve_leave(request, leave_id):
+    leave = LeaveReportStaff.objects.get(id=leave_id)
+    leave.leave_status = 1
+    leave.save()
+    return HttpResponseRedirect(reverse("staff_leave_view"))
+
+
+# Disapproving leave for studeent
+def staff_disapprove_leave(request, leave_id):
+    leave = LeaveReportStaff.objects.get(id=leave_id)
+    leave.leave_status = 2
+    leave.save()
+    return HttpResponseRedirect(reverse("staff_leave_view"))
