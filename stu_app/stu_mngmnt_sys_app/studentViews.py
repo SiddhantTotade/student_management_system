@@ -90,3 +90,38 @@ def student_feedback_save(request):
         except:
             messages.error(request, "Feedback submission failed")
             return HttpResponseRedirect(reverse("student_feedback"))
+
+
+# Rendering student profile page
+def student_profile(request):
+    user = CustomUser.objects.get(id=request.user.id)
+    student = Students.objects.get(admin=user)
+    return render(request, "student_template/student_profile.html", {'user': user, 'student': student})
+
+
+# Updating student profile
+def student_profile_save(request):
+    if request.method != "POST":
+        return HttpResponseRedirect(reverse("student_profile"))
+    else:
+        first_name = request.POST.get("first_name")
+        last_name = request.POST.get("last_name")
+        address = request.POST.get("address")
+        password = request.POST.get("password")
+
+        try:
+            custom_user = CustomUser.objects.get(id=request.user.id)
+            custom_user.first_name = first_name
+            custom_user.last_name = last_name
+            if password != None and password != "":
+                custom_user.set_password(password)
+            custom_user.save()
+
+            student = Students.objects.get(admin=custom_user)
+            student.address = address
+            student.save()
+            messages.success(request, "Update profile successful")
+            return HttpResponseRedirect(reverse("student_profile"))
+        except:
+            messages.error(request, "Failed to update profile")
+            return HttpResponseRedirect(reverse("student_profile"))

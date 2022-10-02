@@ -1,8 +1,9 @@
+from audioop import add
 import json
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
-from .models import Staffs, Subjects, SessionYearModel, Students, Attendance, AttendanceReport, LeaveReportStaff, FeedbackStaff
+from .models import Staffs, Subjects, SessionYearModel, Students, Attendance, AttendanceReport, LeaveReportStaff, FeedbackStaff, CustomUser
 from django.contrib import messages
 from django.urls import reverse
 
@@ -172,3 +173,38 @@ def staff_feedback_save(request):
         except:
             messages.error(request, "Feedback submission failed")
             return HttpResponseRedirect(reverse("staff_feedback"))
+
+
+# Rendering staff profile page
+def staff_profile(request):
+    user = CustomUser.objects.get(id=request.user.id)
+    staff = Staffs.objects.get(admin=user)
+    return render(request, "staff_template/staff_profile.html", {'user': user, 'staff': staff})
+
+
+# Updating staff profile
+def staff_profile_save(request):
+    if request.method != "POST":
+        return HttpResponseRedirect(reverse("admin_profile"))
+    else:
+        first_name = request.POST.get("first_name")
+        last_name = request.POST.get("last_name")
+        address = request.POST.get("address")
+        password = request.POST.get("password")
+
+        try:
+            custom_user = CustomUser.objects.get(id=request.user.id)
+            custom_user.first_name = first_name
+            custom_user.last_name = last_name
+            if password != None and password != "":
+                custom_user.set_password(password)
+            custom_user.save()
+
+            staff = Staffs.objects.get(admin=custom_user.id)
+            staff.address = address
+            staff.save()
+            messages.success(request, "Update profile successful")
+            return HttpResponseRedirect(reverse("staff_profile"))
+        except:
+            messages.error(request, "Failed to update profile")
+            return HttpResponseRedirect(reverse("staff_profile"))
