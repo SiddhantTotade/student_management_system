@@ -141,7 +141,7 @@ class FeedbackStaff(models.Model):
     staff_id = models.ForeignKey(Staffs, on_delete=models.CASCADE)
     feedback = models.TextField()
     feedback_reply = models.TextField()
-    create_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
     objects = models.Manager()
 

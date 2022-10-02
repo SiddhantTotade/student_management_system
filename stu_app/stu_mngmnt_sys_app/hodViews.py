@@ -389,7 +389,7 @@ def student_feedback_message(request):
     return render(request, "hod_template/student_feedback_template.html",{'feedbacks':feedbacks})
 
 
-# Repling message
+# Repling message of student
 @csrf_exempt
 def student_feedback_message_replied(request):
     feedback_id = request.POST.get("id")
@@ -404,5 +404,24 @@ def student_feedback_message_replied(request):
         return HttpResponse("False")
 
 
+
+# Rendering staff feedback page
 def staff_feedback_message(request):
-    pass
+    feedbacks = FeedbackStaff.objects.all()
+    return render(request, "hod_template/staff_feedback_template.html",{'feedbacks':feedbacks})
+
+
+
+# Replying message of staff
+@csrf_exempt
+def staff_feedback_message_replied(request):
+    feedback_id = request.POST.get("id")
+    feedback_message = request.POST.get("message")
+
+    try:
+        feedback = FeedbackStaff.objects.get(id=feedback_id)
+        feedback.feedback_reply = feedback_message
+        feedback.save()
+        return HttpResponse("True")
+    except:
+        return HttpResponse("False")

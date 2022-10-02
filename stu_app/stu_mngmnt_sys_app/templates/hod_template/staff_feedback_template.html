@@ -1,5 +1,5 @@
 {% extends 'hod_template/base_template.html' %}
-{% block page_title %}Student Feedback{% endblock %}
+{% block page_title %}Staff Feedback{% endblock %}
 {% block main_content %}
 <!-- Main content -->
 <section class="content">
@@ -9,7 +9,7 @@
                 <!-- general form elements -->
                 <div class="card card-primary">
                     <div class="card-header">
-                        <h3 class="card-title">Student Feedback</h3>
+                        <h3 class="card-title">Staff Feedback</h3>
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
@@ -17,9 +17,8 @@
                         <table class="table">
                             <tr>
                                 <th>ID</th>
-                                <th>Student ID</th>
-                                <th>Student name</th>
-                                <th>Student session</th>
+                                <th>Staff ID</th>
+                                <th>Staff name</th>
                                 <th>Message</th>
                                 <th>Sended on</th>
                                 <th>Reply</th>
@@ -27,10 +26,8 @@
                             {% for feedback in feedbacks %}
                             <tr>
                                 <td>{{ feedback.id }}</td>
-                                <td>{{ feedback.student_id.admin.id }}</td>
-                                <td>{{ feedback.student_id.admin.first_name }} {{ feedback.student_id.admin.last_name }}
-                                </td>
-                                <td>{{ feedback.student_id.session_year_id.session_start_year }} - {{ feedback.student_id.session_year_id.session_end_year }}</td>
+                                <td>{{ feedback.staff_id.admin.id }}</td>
+                                <td>{{ feedback.staff_id.admin.first_name }} {{ feedback.staff_id.admin.last_name }}</td>
                                 <td>{{ feedback.feedback }}</td>
                                 <td>{{ feedback.created_at }}</td>
                                 <td>
@@ -97,7 +94,7 @@
             var message = $("#reply_message").val();
 
             $.ajax({
-                url: "{% url 'student_feedback_message_replied' %}",
+                url: "{% url 'staff_feedback_message_replied' %}",
                 type: 'POST',
                 data: { message: message, id:id },
             })
