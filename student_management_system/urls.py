@@ -21,6 +21,9 @@ from django.urls import path
 from student_management_system import settings
 from stu_mngmnt_sys_app import views, hodViews, studentViews, staffViews
 
+from django.urls import re_path as url
+from django.views.static import serve
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
@@ -135,6 +138,11 @@ urlpatterns = [
     path('student_profile', studentViews.student_profile, name="student_profile"),
     path('student_profile_save', studentViews.student_profile_save,
          name="student_profile_save"),
+
+    url(r'^media/(?P<path>.*)$', serve,
+        {'document_root':       settings.MEDIA_ROOT}),
+    url(r'^static/(?P<path>.*)$', serve,
+        {'document_root': settings.STATIC_ROOT}),
 
 
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)+static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

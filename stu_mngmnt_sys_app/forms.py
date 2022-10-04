@@ -28,7 +28,6 @@ class AddStudentForm(forms.Form):
         for course in courses:
             small_course = (course.id, course.course_name)
             course_list.append(small_course)
-            print(course_list)
     except:
         course_list = []
 
@@ -39,7 +38,6 @@ class AddStudentForm(forms.Form):
             small_session = (
                 session.id, str(session.session_start_year)+" - "+str(session.session_end_year))
             session_list.append(small_session)
-            print(session_list)
     except:
         session_list = []
 
