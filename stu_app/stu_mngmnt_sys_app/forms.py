@@ -23,17 +23,24 @@ class AddStudentForm(forms.Form):
         attrs={"class": "form-control"}))
 
     course_list = []
-    courses = Courses.objects.all()
-    for course in courses:
-        small_course = (course.id, course.course_name)
-        course_list.append(small_course)
+    try:
+        courses = Courses.objects.all()
+        for course in courses:
+            small_course = (course.id, course.course_name)
+            course_list.append(small_course)
+    except:
+        course_list = []
 
     session_list = []
-    sessions = SessionYearModel.object.all()
-    for session in sessions:
-        small_session = (
-            session.id, str(session.session_start_year)+" - "+str(session.session_end_year))
-        session_list.append(small_session)
+    try:
+        sessions = SessionYearModel.object.all()
+        for session in sessions:
+            small_session = (
+                session.id, str(session.session_start_year)+" - "+str(session.session_end_year))
+            session_list.append(small_session)
+    except:
+        session_list = []
+
 
     gender_choice = (
         ("Male", "Male"),
@@ -65,17 +72,23 @@ class EditStudentForm(forms.Form):
         attrs={"class": "form-control"}))
 
     course_list = []
-    courses = Courses.objects.all()
-    for course in courses:
-        small_course = (course.id, course.course_name)
-        course_list.append(small_course)
+    try:
+        courses = Courses.objects.all()
+        for course in courses:
+            small_course = (course.id, course.course_name)
+            course_list.append(small_course)
+    except:
+        course_list = []
 
     session_list = []
-    sessions = SessionYearModel.object.all()
-    for session in sessions:
-        small_session = (
-            session.id, str(session.session_start_year)+" - "+str(session.session_end_year))
-        session_list.append(small_session)
+    try:
+        sessions = SessionYearModel.object.all()
+        for session in sessions:
+            small_session = (
+                session.id, str(session.session_start_year)+" - "+str(session.session_end_year))
+            session_list.append(small_session)
+    except:
+        session_list = []
 
     gender_choice = (
         ("Male", "Male"),
