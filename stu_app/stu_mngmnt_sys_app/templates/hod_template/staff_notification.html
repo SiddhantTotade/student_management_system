@@ -1,5 +1,5 @@
 {% extends 'hod_template/base_template.html' %}
-{% block page_title %}Staff{% endblock %}
+{% block page_title %}Notification{% endblock %}
 {% block main_content %}
 <!-- Main content -->
 <section class="content">
@@ -8,7 +8,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Staff notification</h3>
+                        <h3 class="card-title">Staff Notification</h3>
 
                         <div class="card-tools">
                             <div class="input-group input-group-sm" style="width: 150px;">
@@ -42,7 +42,8 @@
                                     <td>{{ staff.admin.last_name }}</td>
                                     <td>{{ staff.admin.username }}</td>
                                     <td>{{ staff.admin.email }}</td>
-                                    <td><a href="#" class="btn btn-success">Send notification</a></td>
+                                    <td><a href="#" class="btn btn-success" data-toggle="modal"
+                                            data-target="#myModal">Send notification</a></td>
 
                                 </tr>
                                 {% endfor %}
