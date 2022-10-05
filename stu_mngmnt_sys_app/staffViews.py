@@ -1,9 +1,8 @@
 import json
-from typing import final
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
-from .models import Staffs, Subjects, SessionYearModel, Students, Attendance, AttendanceReport, LeaveReportStaff, FeedbackStaff, CustomUser, Courses
+from .models import Staffs, Subjects, SessionYearModel, Students, Attendance, AttendanceReport, LeaveReportStaff, FeedbackStaff, CustomUser, Courses, NotificationStaff
 from django.contrib import messages
 from django.urls import reverse
 
@@ -254,3 +253,23 @@ def staff_profile_save(request):
         except:
             messages.error(request, "Failed to update profile")
             return HttpResponseRedirect(reverse("staff_profile"))
+
+
+# Saving FCM token
+@csrf_exempt
+def staff_fcmtoken_save(request):
+    token = request.POST.get("token")
+    try:
+        staff = Staffs.objects.get(admin=request.user.id)
+        staff.fcm_token = token
+        staff.save()
+        return HttpResponse("True")
+    except:
+        return HttpResponse("False")
+
+
+# Rendering staff notification page
+def staff_all_notification(request):
+    staff = Staffs.objects.get(admin=request.user.id)
+    notifications = NotificationStaff.objects.filter(staff_id=staff.id)
+    return render(request, "staff_template/all_notification.html", {'notification': notifications})

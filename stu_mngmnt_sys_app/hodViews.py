@@ -4,7 +4,7 @@ from django.shortcuts import render
 from .forms import *
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.contrib import messages
-from stu_mngmnt_sys_app.models import CustomUser, Courses, Subjects, SessionYearModel, Staffs, Students, FeedbackStaff, FeedbackStudent, LeaveReportStaff, LeaveReportStudent, Attendance, AttendanceReport
+from stu_mngmnt_sys_app.models import CustomUser, Courses, Subjects, NotificationStaff, NotificationStudent, SessionYearModel, Staffs, Students, FeedbackStaff, FeedbackStudent, LeaveReportStaff, LeaveReportStudent, Attendance, AttendanceReport
 from django.core.files.storage import FileSystemStorage
 from django.views.decorators.csrf import csrf_exempt
 
@@ -60,9 +60,9 @@ def admin_home(request):
     student_name_list = []
     for student in students_all:
         attendance = AttendanceReport.objects.filter(
-            student_id=student.id,status=True).count()
+            student_id=student.id, status=True).count()
         absent = AttendanceReport.objects.filter(
-            student_id=student.id,status=False).count()
+            student_id=student.id, status=False).count()
         leave = LeaveReportStudent.objects.filter(
             student_id=student.id, leave_status=1).count()
         attendance_present_list_student.append(attendance)
@@ -595,3 +595,64 @@ def admin_profile_save(request):
         except:
             messages.error(request, "Failed to update profile")
             return HttpResponseRedirect(reverse("admin_profile"))
+
+
+# Rendering staff notification page
+def admin_send_notification_staff(request):
+    staffs = Staffs.objects.all()
+    return render(request, "hod_template/staff_notification.html", {'staffs': staffs})
+
+
+# Rendering student notification page
+def admin_send_notification_student(request):
+    students = Students.objects.all()
+    return render(request, "hod_template/student_notification.html", {'students': students})
+
+
+# Sending notification to student
+@csrf_exempt
+def send_student_notification(request):
+    id = request.POST.get("id")
+    message = request.POST.get("message")
+    student = Students.objects.get(admin=id)
+    token = student.fcm_token
+    url = "https://fcm.googleapis.com/fcm/send"
+    body = {
+        "notification": {
+            "title": "Student Management System",
+            "body": message
+        },
+        "to": token
+    }
+    headers = {"Content-Type": "application/json",
+               "Authorization": "key=AAAAWkNzMZE:APA91bH8aQURWQ1kBUx9-sJXa8tbl1UjYyuixweprTaudT7reKwOG0PWAhMiz8JgYzcQfPatbOaNlqcC_DSrUca0o8xkl9kUUfsH08AI5ysylXY4sCavwDbUjbSzEylCXrLOOxQkRfyh"}
+    data = request.post(url, data=json.dumps(body), headers=headers)
+    notification = NotificationStudent(student_id=student, message=message)
+    notification.save()
+    print(data.text)
+    return HttpResponse("True")
+
+
+# Sending notification to staff
+@csrf_exempt
+def send_staff_notification(request):
+    id = request.POST.get("id")
+    message = request.POST.get("message")
+    staff = Staffs.objects.get(admin=id)
+    token = staff.fcm_token
+    url = "https://fcm.googleapis.com/fcm/send"
+    body = {
+        "notification": {
+            "title": "Student Management System",
+            "body": message,
+            "click_action":""
+        },
+        "to": token
+    }
+    headers = {"Content-Type": "application/json",
+               "Authorization": "key=AAAAWkNzMZE:APA91bH8aQURWQ1kBUx9-sJXa8tbl1UjYyuixweprTaudT7reKwOG0PWAhMiz8JgYzcQfPatbOaNlqcC_DSrUca0o8xkl9kUUfsH08AI5ysylXY4sCavwDbUjbSzEylCXrLOOxQkRfyh"}
+    data = request.post(url, data=json.dumps(body), headers=headers)
+    notification = NotificationStaff(staff_id=staff, message=message)
+    notification.save()
+    print(data.text)
+    return HttpResponse("True")
