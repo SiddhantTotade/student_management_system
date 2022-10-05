@@ -116,6 +116,8 @@ urlpatterns = [
     path('staff_profile', staffViews.staff_profile, name="staff_profile"),
     path('staff_profile_save', staffViews.staff_profile_save,
          name="staff_profile_save"),
+    path('staff_fcmtoken_save', staffViews.staff_fcmtoken_save,
+         name="staff_fcmtoken_save"),
 
 
     # Student url path
@@ -135,6 +137,8 @@ urlpatterns = [
     path('student_profile', studentViews.student_profile, name="student_profile"),
     path('student_profile_save', studentViews.student_profile_save,
          name="student_profile_save"),
+    path('student_fcmtoken_save', studentViews.student_fcmtoken_save,
+         name="student_fcmtoken_save"),
 
 
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)+static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

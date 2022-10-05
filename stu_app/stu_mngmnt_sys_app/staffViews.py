@@ -1,5 +1,5 @@
 import json
-from typing import final
+from lib2to3.pgen2 import token
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
@@ -254,3 +254,16 @@ def staff_profile_save(request):
         except:
             messages.error(request, "Failed to update profile")
             return HttpResponseRedirect(reverse("staff_profile"))
+
+
+# Saving FCM token
+@csrf_exempt
+def staff_fcmtoken_save(request):
+    token = request.POST.get("token")
+    try:
+        staff = Staffs.objects.get(admin=request.user.id)
+        staff.fcm_token = token
+        staff.save()
+        return HttpResponse("True")
+    except:
+        return HttpResponse("False")
