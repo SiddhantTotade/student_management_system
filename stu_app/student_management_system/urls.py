@@ -87,6 +87,14 @@ urlpatterns = [
     path('admin_profile', hodViews.admin_profile, name="admin_profile"),
     path('admin_profile_save', hodViews.admin_profile_save,
          name="admin_profile_save"),
+    path('admin_send_notification_staff', hodViews.admin_send_notification_staff,
+         name="admin_send_notification_staff"),
+    path('admin_send_notification_student', hodViews.admin_send_notification_student,
+         name="admin_send_notification_student"),
+    path('send_student_notification', hodViews.send_student_notification,
+         name="send_student_notification"),
+    path('send_staff_notification', hodViews.send_staff_notification,
+         name="send_staff_notification"),
 
     # Staff url path
     path('staff_home', staffViews.staff_home, name="staff_home"),
@@ -118,6 +126,8 @@ urlpatterns = [
          name="staff_profile_save"),
     path('staff_fcmtoken_save', staffViews.staff_fcmtoken_save,
          name="staff_fcmtoken_save"),
+    path('staff_all_notification', staffViews.staff_all_notification,
+         name="staff_all_notification"),
 
 
     # Student url path
@@ -139,6 +149,10 @@ urlpatterns = [
          name="student_profile_save"),
     path('student_fcmtoken_save', studentViews.student_fcmtoken_save,
          name="student_fcmtoken_save"),
-
-
+    path('student_all_notification', studentViews.student_all_notification,
+         name="student_all_notification"),
+     
+    # Firebase path  
+    path('firebase-mesaging-sw.js', views.showFirebaseJS,
+         name="show_firebase_js"),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)+static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

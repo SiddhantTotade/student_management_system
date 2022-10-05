@@ -139,6 +139,26 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    {% url 'admin_send_notification_staff' as admin_send_notification_staff %}
+                    <a href="{% url 'admin_send_notification_staff' %}"
+                        class="nav-link {% if request.path == admin_send_notification_staff %} active {% endif %}">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Staff Notification
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    {% url 'admin_send_notification_student' as admin_send_notification_student %}
+                    <a href="{% url 'admin_send_notification_student' %}"
+                        class="nav-link {% if request.path == admin_send_notification_student %} active {% endif %}">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Student Notification
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
                     {% url 'student_feedback_message' as student_feedback_message %}
                     <a href="{% url 'student_feedback_message' %}" class="nav-link {% if request.path == student_feedback_message %} active {% endif %}">
                         <i class="nav-icon fas fa-th"></i>

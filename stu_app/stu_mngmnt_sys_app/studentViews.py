@@ -1,7 +1,7 @@
 import datetime
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
-from .models import Students, Subjects, CustomUser, Attendance, AttendanceReport, LeaveReportStudent, FeedbackStudent, Courses
+from .models import Students, Subjects, CustomUser, Attendance, AttendanceReport, LeaveReportStudent, FeedbackStudent, Courses, NotificationStudent
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.contrib import messages
@@ -164,3 +164,10 @@ def student_fcmtoken_save(request):
         return HttpResponse("True")
     except:
         return HttpResponse("False")
+
+
+# Rendering student notification page
+def student_all_notification(request):
+    student = Students.objects.get(admin=request.user.id)
+    notifications = NotificationStudent.objects.filter(student_id=student.id)
+    return render(request, "student_template/all_notification.html", {'notifications': notifications})

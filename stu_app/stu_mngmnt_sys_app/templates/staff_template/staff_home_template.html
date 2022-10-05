@@ -256,4 +256,81 @@
         })
     })
 </script>
+<!-- Firebase push notification or messaging service -->
+<script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-messaging.js"></script>
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyAYA_vrqh0lZwYddKCmpz3wtjxHAzklymw",
+        authDomain: "mystudentmanagementsystem.firebaseapp.com",
+        projectId: "mystudentmanagementsystem",
+        storageBucket: "mystudentmanagementsystem.appspot.com",
+        messagingSenderId: "387678679441",
+        appId: "1:387678679441:web:73496e301d0e7f533b2a30",
+        measurementId: "G-Y8RXSLPSQZ"
+    };
+
+
+    firebase.initializeApp(firebaseConfig)
+    const messaging = firebase.messaging()
+
+    function InitializeFirebaseMessaging() {
+        messaging.requestPermission().then(function () {
+            console.log("Notification Permission");
+            return messaging.getToken()
+        }).then(function (token) {
+            console.log("Token : " + token);
+            sendToServer(token)
+        }).catch(function (reason) {
+            console.log(reason);
+        })
+    }
+
+    messaging.onMessage(function (payload) {
+        console.log(payload);
+        const notificationOption = {
+            body: payload.notification.body,
+            icon: payload.notification.icon
+        }
+
+        if (Notification.permission == "granted") {
+            var notification = new Notification(payload.notification.title, notificationOption)
+            notification.onclick = function (ev) {
+                ev.preventDefault()
+                window.open(payload.notification.click_action, '_blank')
+                notification.close()
+            }
+        }
+    })
+
+    messaging.onTokenRefresh(function () {
+        messaging.getToken().then(function (newtoken) {
+            console.log("New token : " + newtoken);
+            sendToServer(newtoken)
+        }).catch(function (reason) {
+            console.log(reason);
+        })
+    })
+
+    function sendToServer(token) {
+        $.ajax({
+            url: "{% url 'staff_fcmtoken_save' %}",
+            type: 'POST',
+            data: { token: token },
+        })
+            .done(function (response) {
+                console.log(response);
+                if (response == "True") {
+                    console.log("Token save");
+                } else {
+                    alert("Error while saving token")
+                }
+                location.reload()
+            })
+            .fail(function () {
+                alert("Error in fetching student")
+            })
+    }
+    InitializeFirebaseMessaging()
+</script>
 {% endblock %}
