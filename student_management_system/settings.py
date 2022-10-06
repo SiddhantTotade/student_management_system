@@ -36,6 +36,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
+PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
 
 # Application definition
 
@@ -88,7 +89,7 @@ WSGI_APPLICATION = 'student_management_system.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': os.path.join(PROJECT_PATH,'mysite.sqlite3'),
         # 'ENGINE': 'django.db.backends.mysql',
         # 'NAME': 'student_management_system',
         # 'USER': 'student_management_system',
