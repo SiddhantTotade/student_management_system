@@ -1,0 +1,114 @@
+{% extends 'staff_template/base_template.html' %}
+{% block page_title %}Edit Results{% endblock %}
+{% block main_content %}
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- general form elements -->
+                <form action="{% url 'edit_student_result' %}" method="post">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">Edit Student Results</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <!-- form start -->
+                        {% csrf_token %}
+                        <div class="card-body">
+                            {{ form }}
+                            <div class="from-group">
+                                <!-- /.col -->
+                                {% if messages %}
+                                {% for message in messages %}
+                                {% if message.tags == 'success' %}
+                                <div class="alert alert-success" style="margin-top: 10px;text-align: center;">{{ message
+                                    }}
+                                </div>
+                                {% elif message.tags == 'error' %}
+                                <div class="alert alert-danger" style="margin-top: 10px;text-align: center;">{{ message
+                                    }}
+                                </div>
+                                {% endif %}
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+
+                        <div class="card-footer">
+                            <button type="button" class="btn btn-primary btn-block" id="fetch_student">Save
+                                Result</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+{% endblock %}
+
+
+{% block custom_js %}
+<script>
+    $(document).ready(function () {
+        $("#id_subject_id").click(function () {
+            fetchStudents()
+        })
+        $("#id_session_id").click(function () {
+            fetchStudents()
+        })
+
+        $("#id_student_id").change(function(){
+            fetch_result_student()
+        })
+
+        function fetch_result_student() {
+            var subject = $("#id_subject_id").val()
+            var student_id = $("#id_student_id").val()
+            
+            $.ajax({
+                url: "{% url 'fetch_result_student' %}",
+                type: 'POST',
+                data: { subject_id: subject, student_id: student_id },
+            })
+            .done(function (response) {
+                    if (response == "False"){
+                        alert("Result not found")
+                    }
+                    else{
+                        var json_data = JSON.parse(response);
+                        $("#id_assignment_marks").val(json_data['assign_marks'])
+                        $("#id_exam_marks").val(json_data['exam_marks'])
+                    }
+                })
+                .fail(function () {
+                    alert("Error in fetching student result")
+                })
+            }
+            
+        function fetchStudents() {
+            var session_year = $("#id_session_id").val()
+            var subject = $("#id_subject_id").val()
+
+            $.ajax({
+                url: "{% url 'get_students' %}",
+                type: 'POST',
+                data: { subject: subject, session_year: session_year },
+            })
+            .done(function (response) {
+                var json_data = JSON.parse(response);
+                var div_data = "";
+                for (key in json_data) {
+                    div_data += "<option value='" + json_data[key]['id'] + "'>ID : " + json_data[key]['id'] + " : " + json_data[key]['name'] + "</option>";
+                }
+                $("#id_student_id").html(div_data);
+            })
+            .fail(function () {
+                alert("Error in fetching student")
+            })
+        }
+    })
+</script>
+{% endblock %}

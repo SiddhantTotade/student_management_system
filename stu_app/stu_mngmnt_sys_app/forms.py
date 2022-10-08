@@ -1,5 +1,12 @@
 from django import forms
-from .models import Courses, SessionYearModel
+from django.forms import ChoiceField
+from .models import Courses, SessionYearModel,Subjects
+
+
+# Choice validation class
+def ChoiceNoValidation(ChoiceField):
+    def validate(self,value):
+        pass
 
 
 # Date input form class
@@ -106,3 +113,35 @@ class EditStudentForm(forms.Form):
         label="Session year", widget=forms.Select(attrs={"class": "form-control"}), choices=session_list)
     profile_pic = forms.FileField(label="Profile pic", max_length=50, widget=forms.FileInput(
         attrs={"class": "form-control"}), required=False)
+
+
+class EditResultForm(forms.Form):
+    def __init__(self,*args,**kwargs):
+        self.staff_id=kwargs.pop('staff_id')
+        super().__init__()
+
+        subject_list=[]
+        try:
+            subjects = Subjects.objects.filter(staff_id=self.staff_id)
+            for subject in subjects:
+                subject_single=(subject.id,subject.subject_name)
+                subject_list.append(subject_single)
+        except:
+            subject_list=[]
+
+        self.fields['subject_id'].choices=subject_list
+
+    session_list = []
+    try:
+        sessions = SessionYearModel.object.all()
+        for session in sessions:
+            session_single = (session.id,str(session.session_start_year)+" - "+str(session.session_end_year))
+            session_list.append(session_single)
+    except:
+        session_list=[]
+
+    subject_id = forms.ChoiceField(label="Subject",widget=forms.Select(attrs={'class':'form-control'}))
+    session_id = forms.ChoiceField(label="Session year",choices=session_list,widget=forms.Select(attrs={'class':'form-control'}))
+    student_id = forms.ChoiceField(label="Student",widget=forms.Select(attrs={'class':'form-control'}))
+    assignment_marks = forms.CharField(label="Assignment marks",widget=forms.TextInput(attrs={'class':'form-control'}))
+    exam_marks = forms.CharField(label="Exam marks",widget=forms.TextInput(attrs={'class':'form-control'}))

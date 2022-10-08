@@ -20,6 +20,7 @@ from django.conf.urls.static import static
 from django.urls import path
 from student_management_system import settings
 from stu_mngmnt_sys_app import views, hodViews, studentViews, staffViews
+from stu_mngmnt_sys_app.editResultViewClass import EditResultViewClass
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -132,6 +133,10 @@ urlpatterns = [
          name="staff_add_result"),
     path('save_student_result', staffViews.save_student_result,
          name="save_student_result"),
+    path('edit_student_result',EditResultViewClass.as_view() ,
+         name="edit_student_result"),
+    path('fetch_result_student',staffViews.fetch_result_student ,
+         name="fetch_result_student"),
 
 
     # Student url path

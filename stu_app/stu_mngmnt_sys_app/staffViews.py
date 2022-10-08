@@ -1,5 +1,4 @@
 import json
-from tabnanny import check
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
@@ -311,3 +310,18 @@ def save_student_result(request):
         except:
             messages.error(request, "Failed to add result")
             return HttpResponseRedirect(reverse("staff_add_result"))
+
+
+# Fetching students results
+@csrf_exempt
+def fetch_result_student(request):
+    subject_id = request.POST.get('subject_id')
+    student_id = request.POST.get('student_id')
+    student_obj = Students.objects.get(admin=student_id)
+    result = StudentResult.objects.filter(student_id=student_obj.id,subject_id=subject_id).exists()
+    if result:
+        result=StudentResult.objects.filter(student_id=student_obj.id,subject_id=subject_id)
+        result_data = {"exam_marks":result.subject_exam_marks,"assign_marks":result.subject_assignment_marks}
+        return HttpResponse(json.dumps(result_data))
+    else:
+        return HttpResponse("False")
