@@ -620,7 +620,9 @@ def send_student_notification(request):
     body = {
         "notification": {
             "title": "Student Management System",
-            "body": message
+            "body": message,
+            "click_action": "https://stu-mngmnt-sys.herokuapp.com/student_all_notification",
+            "icon": "https://stu-mngmnt-sys.herokuapp.com/static/dist/img/user2-160x160.jpg"
         },
         "to": token
     }
@@ -645,7 +647,8 @@ def send_staff_notification(request):
         "notification": {
             "title": "Student Management System",
             "body": message,
-            "click_action":""
+            "click_action": "https://stu-mngmnt-sys.herokuapp.com/staff_all_notification",
+            "icon": "https://stu-mngmnt-sys.herokuapp.com/static/dist/img/user2-160x160.jpg"
         },
         "to": token
     }

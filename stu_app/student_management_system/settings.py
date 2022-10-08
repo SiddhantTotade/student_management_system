@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 import os
 from pathlib import Path
-import dj_database_url
 from stu_mngmnt_sys_app import password
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -28,14 +27,14 @@ SECRET_KEY = 'django-insecure-)dnky6m)+ck2)j_q5wdmi=u7!a45%jku+iutkpw%zmp=88xl0%
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["stu-mngmnt-sys.herokuapp.com", "127.0.0.1"]
+ALLOWED_HOSTS = ["stu-mngmnt-sys.herokuapp.com","127.0.0.1"]
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 STATIC_URL = "/static/"
+# django_on_heroku.settings(locals())
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
-
 
 # Application definition
 
@@ -98,6 +97,17 @@ DATABASES = {
     }
 }
 
+# DATABASES = {
+#     'default':{
+#         'ENGINE':'django.db.backends.postgresql_psycopg2',
+#         'NAME' : 'drn358csfd1a',
+#         'USER':'mbrekkgrezoaad',
+#         'PASSWORD':'abed6863680debd4976bf07493832abaa91db28fa47466710db2d617688fb9ea',
+#         'HOST':'ec2-3-214-2-141.compute-1.amazonaws.com',
+#         'PORT':'5432',
+#     }
+# }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -138,14 +148,14 @@ AUTH_USER_MODEL = 'stu_mngmnt_sys_app.CustomUser'
 AUTHENTICATION_BACKENDS = ['stu_mngmnt_sys_app.email_backend.EmailBackend']
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-# EMAIL_FILE_PATH=os.path.join(BASE_DIR,'sent_mails')
+EMAIL_FILE_PATH=os.path.join(BASE_DIR,'sent_mails')
 
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = '587'
-EMAIL_HOST_USER = 'noreply.projectsms@gmail.com'
-EMAIL_HOST_PASSWORD = password.password
-EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = "Student Management System"
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = '587'
+# EMAIL_HOST_USER = 'noreply.projectsms@gmail.com'
+# EMAIL_HOST_PASSWORD = password.password
+# EMAIL_USE_TLS = True
+# DEFAULT_FROM_EMAIL = "Student Management System"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -154,5 +164,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-prod_db = dj_database_url.config(conn_max_age=500)
-DATABASES['default'].update(prod_db)
+# prod_db = dj_database_url.config(conn_max_age=500)
+# DATABASES['default'].update(prod_db)

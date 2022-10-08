@@ -90,7 +90,6 @@
     $(".show_notification").click(function () {
         var student_id = $(this).parents("tr").children("td:eq(0)").text()
         var student_name = $(this).parents("tr").children("td:eq(3)").text()
-        console.log(student_id);
         $("#student_id").val(student_id)
         $("#name_span").text(student_name)
     })
@@ -98,7 +97,7 @@
     $(".send_notification_btn").click(function () {
         var id = $("#student_id").val()
         var message = $("#message_not").val()
-        sendNotification(id, message)
+        // sendNotification(id, message)
     })
 
     function sendNotification(id, message) {
@@ -107,14 +106,14 @@
             type: 'POST',
             data: { id: id, message: message },
         })
-            .done(function (response) {
-                if (response == "True") {
-                    alert("Message sent")
-                } else {
-                    alert("Failed to send message")
-                }
-                location.reload()
-            })
+        .done(function (response) {
+            if (response == "True") {
+                alert("Message sent")
+            } else {
+                alert("Failed to send message")
+            }
+            location.reload()
+        })
     }
 </script>
 {% endblock %}
