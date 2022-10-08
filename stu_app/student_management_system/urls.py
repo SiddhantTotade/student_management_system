@@ -128,6 +128,10 @@ urlpatterns = [
          name="staff_fcmtoken_save"),
     path('staff_all_notification', staffViews.staff_all_notification,
          name="staff_all_notification"),
+    path('staff_add_result', staffViews.staff_add_result,
+         name="staff_add_result"),
+    path('save_student_result', staffViews.save_student_result,
+         name="save_student_result"),
 
 
     # Student url path

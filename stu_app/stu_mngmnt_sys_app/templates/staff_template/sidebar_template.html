@@ -44,7 +44,6 @@
                         </p>
                     </a>
                 </li>
-                </li>
                 <li class="nav-item">
                     {% url 'staff_update_attendance' as staff_update_attendance %}
                     <a href="{% url 'staff_update_attendance' %}"
@@ -52,6 +51,16 @@
                         <i class="nav-icon fas fa-th"></i>
                         <p>
                             Update Attendance
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    {% url 'staff_add_result' as staff_add_result %}
+                    <a href="{% url 'staff_add_result' %}"
+                        class="nav-link {% if request.path == staff_add_result %} active {% endif %}">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Student Result
                         </p>
                     </a>
                 </li>

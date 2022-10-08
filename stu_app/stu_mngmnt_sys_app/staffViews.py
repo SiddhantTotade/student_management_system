@@ -1,8 +1,9 @@
 import json
+from tabnanny import check
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
-from .models import Staffs, Subjects, SessionYearModel, Students, Attendance, AttendanceReport, LeaveReportStaff, FeedbackStaff, CustomUser, Courses, NotificationStaff
+from .models import Staffs, Subjects, SessionYearModel, Students, Attendance, AttendanceReport, LeaveReportStaff, FeedbackStaff, CustomUser, Courses, NotificationStaff,StudentResult
 from django.contrib import messages
 from django.urls import reverse
 
@@ -273,3 +274,40 @@ def staff_all_notification(request):
     staff = Staffs.objects.get(admin=request.user.id)
     notifications = NotificationStaff.objects.filter(staff_id=staff.id)
     return render(request, "staff_template/all_notification.html", {'notification': notifications})
+
+
+# Rendering staff result page
+def staff_add_result(request):
+    subjects = Subjects.objects.filter(staff_id=request.user.id)
+    session_years = SessionYearModel.object.all()
+    return render(request, "staff_template/staff_add_result.html", {'subjects': subjects,'session_years':session_years})
+
+
+# Saving student result
+def save_student_result(request):
+    if request.method != 'POST':
+        return HttpResponseRedirect('staff_add_result')
+    else:
+        student_admin_id = request.POST.get("student_list")
+        assignment_marks = request.POST.get('assignment_marks')
+        exam_marks = request.POST.get('exam_marks')
+        subject_id = request.POST.get('subject')
+        subject_obj  = Subjects.objects.get(id=subject_id)
+        student_obj = Students.objects.get(admin=student_admin_id)
+        try:
+            check_exist = StudentResult.objects.filter(subject_id=subject_obj,student_id=student_obj).exists()
+            if check_exist:
+                result = StudentResult.objects.get(subject_id=subject_obj,student_id=student_obj)
+                result.subject_assignment_marks = assignment_marks
+                result.subject_exam_marks = exam_marks
+                result.save()
+                messages.success(request, "Result updated successfully")
+                return HttpResponseRedirect(reverse("staff_add_result"))
+            else:
+                result = StudentResult(student_id=student_obj,subject_id=subject_obj,subject_exam_marks=exam_marks,subject_assignment_marks=assignment_marks)
+                result.save()
+                messages.success(request, "Result added successfully")
+                return HttpResponseRedirect(reverse("staff_add_result"))
+        except:
+            messages.error(request, "Failed to add result")
+            return HttpResponseRedirect(reverse("staff_add_result"))
