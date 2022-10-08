@@ -74,6 +74,6 @@ def showFirebaseJS(request):
         '    icon: notification.icon' \
         '}'\
         'return self.registration.showNotification(payload.notification.title, notificationOption)'\
-        '})'
+        '});'
 
     return HttpResponse(data,content_type="text/javascript")
