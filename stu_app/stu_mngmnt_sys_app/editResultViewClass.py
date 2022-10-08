@@ -1,6 +1,10 @@
+from django.urls import reverse
+from django.http import HttpResponseRedirect
 from django.views import View
+from django.contrib import messages
 from django.shortcuts import render
 from .forms import EditResultForm
+from .models import Students,Subjects,StudentResult
 
 
 class EditResultViewClass(View):
@@ -10,4 +14,23 @@ class EditResultViewClass(View):
         return render(request,"staff_template/edit_student_result.html",{'form':edit_result_form})
     
     def post(self,request,*args,**kwargs):
-        pass
+        form = EditResultForm(request.POST,staff_id=request.user.id)
+        if form.is_valid():
+            student_admin_id = form.cleaned_data["subject_id"]
+            assignment_marks = form.cleaned_data['assignment_marks']
+            exam_marks = form.cleaned_data['exam_marks']
+            subject_id = form.cleaned_data['subject']
+            subject_obj  = Subjects.objects.get(id=subject_id)
+            student_obj = Students.objects.get(admin=student_admin_id)
+            result = StudentResult.objects.get(subject_id=subject_obj,student_id=student_obj)
+            result.subject_assignment_marks = assignment_marks
+            result.subject_exam_marks = exam_marks
+            result.save()
+            messages.success(request,"Result updated successfully")
+            return HttpResponseRedirect(reverse("edit_student_result"))
+        else:
+            messages.error(request,"Failed to update result")
+            form = EditResultForm(request.POST,staff_id=request.user.id)
+            return render(request,"staff_template/edit_student_result.html",{'form':form})
+                
+        

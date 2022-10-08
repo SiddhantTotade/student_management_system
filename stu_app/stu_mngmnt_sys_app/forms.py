@@ -4,7 +4,7 @@ from .models import Courses, SessionYearModel,Subjects
 
 
 # Choice validation class
-def ChoiceNoValidation(ChoiceField):
+class ChoiceNoValidation(ChoiceField):
     def validate(self,value):
         pass
 
@@ -118,7 +118,7 @@ class EditStudentForm(forms.Form):
 class EditResultForm(forms.Form):
     def __init__(self,*args,**kwargs):
         self.staff_id=kwargs.pop('staff_id')
-        super().__init__()
+        super(EditResultForm,self).__init__(*args,**kwargs)
 
         subject_list=[]
         try:
@@ -142,6 +142,6 @@ class EditResultForm(forms.Form):
 
     subject_id = forms.ChoiceField(label="Subject",widget=forms.Select(attrs={'class':'form-control'}))
     session_id = forms.ChoiceField(label="Session year",choices=session_list,widget=forms.Select(attrs={'class':'form-control'}))
-    student_id = forms.ChoiceField(label="Student",widget=forms.Select(attrs={'class':'form-control'}))
+    student_id = ChoiceNoValidation(label="Student",widget=forms.Select(attrs={'class':'form-control'}))
     assignment_marks = forms.CharField(label="Assignment marks",widget=forms.TextInput(attrs={'class':'form-control'}))
     exam_marks = forms.CharField(label="Exam marks",widget=forms.TextInput(attrs={'class':'form-control'}))

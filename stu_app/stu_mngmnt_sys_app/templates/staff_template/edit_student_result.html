@@ -64,6 +64,28 @@
             fetch_result_student()
         })
 
+        function fetchStudents() {
+            var session_year = $("#id_session_id").val()
+            var subject = $("#id_subject_id").val()
+
+            $.ajax({
+                url: "{% url 'get_students' %}",
+                type: 'POST',
+                data: { subject: subject, session_year: session_year },
+            })
+            .done(function (response) {
+                var json_data = JSON.parse(response);
+                var div_data = "";
+                for (key in json_data) {
+                    div_data += "<option value='" + json_data[key]['id'] + "'>ID : " + json_data[key]['id'] + " : " + json_data[key]['name'] + "</option>";
+                }
+                $("#id_student_id").html(div_data);
+            })
+            .fail(function () {
+                alert("Error in fetching student")
+            })
+        }
+
         function fetch_result_student() {
             var subject = $("#id_subject_id").val()
             var student_id = $("#id_student_id").val()
@@ -87,28 +109,6 @@
                     alert("Error in fetching student result")
                 })
             }
-            
-        function fetchStudents() {
-            var session_year = $("#id_session_id").val()
-            var subject = $("#id_subject_id").val()
-
-            $.ajax({
-                url: "{% url 'get_students' %}",
-                type: 'POST',
-                data: { subject: subject, session_year: session_year },
-            })
-            .done(function (response) {
-                var json_data = JSON.parse(response);
-                var div_data = "";
-                for (key in json_data) {
-                    div_data += "<option value='" + json_data[key]['id'] + "'>ID : " + json_data[key]['id'] + " : " + json_data[key]['name'] + "</option>";
-                }
-                $("#id_student_id").html(div_data);
-            })
-            .fail(function () {
-                alert("Error in fetching student")
-            })
-        }
     })
 </script>
 {% endblock %}

@@ -320,7 +320,7 @@ def fetch_result_student(request):
     student_obj = Students.objects.get(admin=student_id)
     result = StudentResult.objects.filter(student_id=student_obj.id,subject_id=subject_id).exists()
     if result:
-        result=StudentResult.objects.filter(student_id=student_obj.id,subject_id=subject_id)
+        result=StudentResult.objects.get(student_id=student_obj.id,subject_id=subject_id)
         result_data = {"exam_marks":result.subject_exam_marks,"assign_marks":result.subject_assignment_marks}
         return HttpResponse(json.dumps(result_data))
     else:
