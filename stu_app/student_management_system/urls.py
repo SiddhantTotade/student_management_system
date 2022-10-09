@@ -24,6 +24,10 @@ from stu_mngmnt_sys_app.editResultViewClass import EditResultViewClass
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('signup_admin', views.signup_admin,name='signup_admin'),
+    path('signup_student', views.signup_student,name='signup_student'),
+    path('signup_staff', views.signup_staff,name='signup_staff'),
+    path('do_admin_signup', views.do_admin_signup,name='do_admin_signup'),
     path('accounts/', include('django.contrib.auth.urls')),
 
     # HOD url path

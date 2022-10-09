@@ -5,6 +5,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from stu_mngmnt_sys_app.email_backend import EmailBackend
 from django.contrib import messages
+from .models import CustomUser
 import requests
 # Create your views here.
 
@@ -88,3 +89,34 @@ def showFirebaseJS(request):
         '});'
 
     return HttpResponse(data,content_type="text/javascript")
+
+
+# Rendering signup page for admin
+def signup_admin(request):
+    return render(request,"signup_admin_page.html")
+
+
+# Rendering signup page for staff
+def signup_staff(request):
+    return render(request,"signup_staff_page.html")
+
+
+# Rendering signup page for student
+def signup_student(request):
+    return render(request,"signup_student_page.html")
+
+
+# Signing details for admin
+def do_admin_signup(request):
+    username = request.POST.get("username")
+    email = request.POST.get("email")
+    password = request.POST.get("password")
+
+    try:
+        user= CustomUser.objects.create_user(username=username,password=password,email=email,user_type=1)
+        user.save()
+        messages.success(request,"Admin created successfully")
+        return HttpResponseRedirect(reverse("show_login"))
+    except:
+        messages.error(request,"Failed to create admin")
+        return HttpResponseRedirect(reverse("show_login"))
