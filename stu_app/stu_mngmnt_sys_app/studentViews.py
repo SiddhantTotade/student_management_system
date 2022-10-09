@@ -1,7 +1,7 @@
 import datetime
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
-from .models import Students, Subjects, CustomUser, Attendance, AttendanceReport, LeaveReportStudent, FeedbackStudent, Courses, NotificationStudent
+from .models import Students, Subjects, CustomUser, Attendance, AttendanceReport, LeaveReportStudent, FeedbackStudent, Courses, NotificationStudent,StudentResult
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.contrib import messages
@@ -171,3 +171,10 @@ def student_all_notification(request):
     student = Students.objects.get(admin=request.user.id)
     notifications = NotificationStudent.objects.filter(student_id=student.id)
     return render(request, "student_template/all_notification.html", {'notifications': notifications})
+
+
+# Rendering student result
+def student_view_result(request):
+    student = Students.objects.get(admin=request.user.id)
+    student_result = StudentResult.objects.filter(student_id = student.id)
+    return render(request, "student_template/student_result.html", {'student_result': student_result})

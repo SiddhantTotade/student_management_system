@@ -160,6 +160,8 @@ urlpatterns = [
          name="student_fcmtoken_save"),
     path('student_all_notification', studentViews.student_all_notification,
          name="student_all_notification"),
+    path('student_view_result', studentViews.student_view_result,
+         name="student_view_result"),
      
     # Firebase path  
     path('firebase-mesaging-sw.js', views.showFirebaseJS,
