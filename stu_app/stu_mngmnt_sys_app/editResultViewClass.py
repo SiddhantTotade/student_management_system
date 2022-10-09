@@ -16,10 +16,10 @@ class EditResultViewClass(View):
     def post(self,request,*args,**kwargs):
         form = EditResultForm(request.POST,staff_id=request.user.id)
         if form.is_valid():
-            student_admin_id = form.cleaned_data["subject_id"]
+            student_admin_id = form.cleaned_data["student_id"]
             assignment_marks = form.cleaned_data['assignment_marks']
             exam_marks = form.cleaned_data['exam_marks']
-            subject_id = form.cleaned_data['subject']
+            subject_id = form.cleaned_data['subject_id']
             subject_obj  = Subjects.objects.get(id=subject_id)
             student_obj = Students.objects.get(admin=student_admin_id)
             result = StudentResult.objects.get(subject_id=subject_obj,student_id=student_obj)

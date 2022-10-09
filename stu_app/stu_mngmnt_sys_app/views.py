@@ -1,9 +1,11 @@
+import json
 from django.urls import reverse
 from django.contrib.auth import login, logout
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from stu_mngmnt_sys_app.email_backend import EmailBackend
 from django.contrib import messages
+import requests
 # Create your views here.
 
 
@@ -22,6 +24,15 @@ def doLogin(request):
     if request.method != "POST":
         return HttpResponse("<h2>Method Not Allowed</h2>")
     else:
+        captcha_token = request.POST.get("g-recaptcha-response")
+        captcha_url = "https://www.google.com/recaptcha/api/siteverify"
+        captcha_secret = "6Le6qWciAAAAAIRE6OikFzTG_YZsliwfOlDu3OHq"
+        captcha_data = {'secret':captcha_secret,'response':captcha_token}
+        captcha_server_response = requests.post(url=captcha_url,data=captcha_data)
+        captcha_json = json.loads(captcha_server_response.text)
+        if captcha_json['success'] == False:
+            messages.error(request, "Invalid captcha. Try again")
+            return HttpResponseRedirect("/")
         user = EmailBackend.authenticate(
             request, username=request.POST.get("email"), password=request.POST.get("password"))
         if user != None:

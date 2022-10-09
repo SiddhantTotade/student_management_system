@@ -22,12 +22,10 @@
                                 {% if messages %}
                                 {% for message in messages %}
                                 {% if message.tags == 'success' %}
-                                <div class="alert alert-success" style="margin-top: 10px;text-align: center;">{{ message
-                                    }}
+                                <div class="alert alert-success" style="margin-top: 10px;text-align: center;">{{ message }}
                                 </div>
                                 {% elif message.tags == 'error' %}
-                                <div class="alert alert-danger" style="margin-top: 10px;text-align: center;">{{ message
-                                    }}
+                                <div class="alert alert-danger" style="margin-top: 10px;text-align: center;">{{ message }}
                                 </div>
                                 {% endif %}
                                 {% endfor %}
@@ -37,7 +35,7 @@
                         <!-- /.card-body -->
 
                         <div class="card-footer">
-                            <button type="button" class="btn btn-primary btn-block" id="fetch_student">Save
+                            <button type="submit" class="btn btn-primary btn-block" id="fetch_student">Save
                                 Result</button>
                         </div>
                     </div>
