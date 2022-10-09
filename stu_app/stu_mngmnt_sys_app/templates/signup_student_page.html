@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Student Management System | Log in</title>
+    <title>Student Management System | Signup Student</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -29,15 +29,23 @@
         <!-- /.login-logo -->
         <div class="card">
             <div class="card-body login-card-body">
-                <p class="login-box-msg">Sign in</p>
+                <p class="login-box-msg">Signup Student</p>
 
-                <form action="/doLogin" method="post">
+                <form action="/do_student_signup" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="input-group mb-3">
                         <input type="email" class="form-control" placeholder="Email" name="email">
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-envelope"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Username" name="username">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-user"></span>
                             </div>
                         </div>
                     </div>
@@ -50,15 +58,77 @@
                         </div>
                     </div>
                     <div class="input-group mb-3">
-                        <div class="g-recaptcha" data-sitekey="6Le6qWciAAAAAEmeGbt94-J7ZQO3cawm8Blw0JyB"></div>
+                        <input type="text" class="form-control" placeholder="First Name" name="first_name">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-user"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Last Name" name="last_name">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-user"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Address" name="address">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-map-marker"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <select class="form-control" name="course">
+                            <option value="none" selected disabled hidden>Select course</option>
+                            {% for course in courses %}
+                            <option value="{{ course.id }}">{{ course.course_name }}</option>
+                            {% endfor %}
+                        </select>
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <select class="form-control" name="sex">
+                            <option value="none" selected disabled hidden>Select Gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="file" class="form-control" placeholder="Image" name="profile_pic">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-file"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <select class="form-control" name="session">
+                            <option value="none" selected disabled hidden>Select session</option>
+                            {% for session in sessions %}
+                            <option value="{{ session.id }}">{{ session.session_start_year }} - {{ session.session_end_year }}</option>
+                            {% endfor %}
+                        </select>
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                            </div>
+                        </div>
                     </div>
                     <div class="row">
                         <!-- /.col -->
                         <div class="col-12">
-                            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
-                        </div>
-                        <div class="col-12 text-center">
-                            <a href="{% url 'password_reset' %}">Reset Password</a>
+                            <button type="submit" class="btn btn-primary btn-block">Signup Student</button>
                         </div>
                     </div>
                     <div class="row">

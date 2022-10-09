@@ -45,7 +45,7 @@
                         <input type="text" class="form-control" placeholder="Username" name="username">
                         <div class="input-group-append">
                             <div class="input-group-text">
-                                <span class="fas fa-envelope"></span>
+                                <span class="fas fa-user"></span>
                             </div>
                         </div>
                     </div>
@@ -70,8 +70,6 @@
                             {% for message in messages %}
                             {% if message.tags == 'error' %}
                             <div class="alert alert-danger" style="margin-top: 10px;text-align: center;">{{ message }}</div>
-                            {% elif message.tags == 'success' %}
-                            <div class="alert alert-success" style="margin-top: 10px;text-align: center;">{{ message }}</div>
                             {% endif %}
                             {% endfor %}
                         </div>

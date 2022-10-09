@@ -28,6 +28,8 @@ urlpatterns = [
     path('signup_student', views.signup_student,name='signup_student'),
     path('signup_staff', views.signup_staff,name='signup_staff'),
     path('do_admin_signup', views.do_admin_signup,name='do_admin_signup'),
+    path('do_staff_signup', views.do_staff_signup,name='do_staff_signup'),
+    path('do_student_signup', views.do_student_signup,name='do_student_signup'),
     path('accounts/', include('django.contrib.auth.urls')),
 
     # HOD url path

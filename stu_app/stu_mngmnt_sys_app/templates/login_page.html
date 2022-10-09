@@ -63,6 +63,12 @@
                         <div class="col-12 text-center">
                             <a href="{% url 'signup_admin' %}">Signup Admin</a>
                         </div>
+                        <div class="col-12 text-center">
+                            <a href="{% url 'signup_staff' %}">Signup Staff</a>
+                        </div>
+                        <div class="col-12 text-center">
+                            <a href="{% url 'signup_student' %}">Signup Student</a>
+                        </div>
                     </div>
                     <div class="row">
                         <!-- /.col -->
@@ -71,6 +77,10 @@
                             {% for message in messages %}
                             {% if message.tags == 'error' %}
                             <div class="alert alert-danger" style="margin-top: 10px;text-align: center;">{{ message }}
+                            </div>
+                            {% endif %}
+                            {% if message.tags == 'success' %}
+                            <div class="alert alert-success" style="margin-top: 10px;text-align: center;">{{ message }}
                             </div>
                             {% endif %}
                             {% endfor %}
